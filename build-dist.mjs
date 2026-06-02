@@ -7,6 +7,7 @@ const dist = path.join(root, "dist");
 
 const htmlFiles = [
   "index.html",
+  "redes.html",
   "rotas.html",
   "orcamento.html",
   "mudanca-residencial.html",

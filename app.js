@@ -2,6 +2,7 @@ const phone = "5587981703225";
 const utm = "utm_source=site-asi&utm_medium=whatsapp&utm_campaign=lead-organico";
 const fallbackMessage = "Ol\u00e1, vim pelo site da ASI - Alexandre Solu\u00e7\u00f5es Integradas.\nQuero falar com o Sr. Alexandre sobre uma mudan\u00e7a.";
 const fallbackWhatsApp = `https://wa.me/${phone}?text=${encodeURIComponent(fallbackMessage)}&${utm}`;
+const socialBridgePage = "redes.html";
 
 function makeRef() {
   return `ASI-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -290,6 +291,69 @@ function bindWhatsAppLinks() {
   });
 }
 
+function socialChannelFromHref(href, linkEl) {
+  const declared = linkEl?.dataset?.social;
+  if (declared === "instagram" || declared === "facebook") return declared;
+  const value = String(href || "").toLowerCase();
+  if (value.includes("canal=instagram")) return "instagram";
+  if (value.includes("canal=facebook")) return "facebook";
+  if (value.includes("instagram.com") || value.includes("ig.me/")) return "instagram";
+  if (value.includes("facebook.com") || value.includes("m.me/")) return "facebook";
+  return "";
+}
+
+function socialSource(linkEl, ctx) {
+  if (linkEl.dataset.src) return linkEl.dataset.src;
+  if (linkEl.classList.contains("topbar-social")) return `header_${ctx.page || "home"}`;
+  if (linkEl.classList.contains("reviews-social")) return "reviews_cta";
+  if (linkEl.closest(".footer-col, .footer-links, footer")) return `${ctx.page || "site"}_footer`;
+  return `social_${ctx.page || "site"}`;
+}
+
+function composeSocialBridgeUrl(channel, source, payload = {}) {
+  const ctx = context();
+  const data = { ...ctx, ...payload };
+  const url = new URL(socialBridgePage, window.location.href);
+  url.searchParams.set("canal", channel);
+  url.searchParams.set("origem", source);
+  url.searchParams.set("pagina", data.page || ctx.page);
+  url.searchParams.set("servico", data.service || ctx.service);
+  url.searchParams.set("ref", data.ref || makeRef());
+  url.searchParams.set("url", data.url || ctx.url);
+  if (data.route || ctx.route) url.searchParams.set("rota", data.route || ctx.route);
+  return url.toString();
+}
+
+function bindSocialLinks() {
+  document.querySelectorAll("a[href]").forEach((linkEl) => {
+    const originalHref = linkEl.getAttribute("href");
+    const channel = socialChannelFromHref(originalHref, linkEl);
+    if (!channel) return;
+
+    const updateHref = () => {
+      const current = context();
+      linkEl.href = composeSocialBridgeUrl(channel, socialSource(linkEl, current), {
+        page: current.page,
+        url: current.url,
+        service: linkEl.dataset.service || current.service,
+        route: linkEl.dataset.route || current.route
+      });
+    };
+
+    updateHref();
+    linkEl.target = "_blank";
+    const rel = new Set((linkEl.getAttribute("rel") || "").split(/\s+/).filter(Boolean));
+    rel.add("noopener");
+    rel.add("noreferrer");
+    linkEl.setAttribute("rel", [...rel].join(" "));
+    if (!linkEl.getAttribute("aria-label")) {
+      const label = linkEl.textContent.trim() || (channel === "instagram" ? "Instagram" : "Facebook");
+      linkEl.setAttribute("aria-label", `Abrir ${label} da ASI com rastreio do site`);
+    }
+    linkEl.addEventListener("click", updateHref);
+  });
+}
+
 function bindTopbarScroll() {
   const topbar = document.querySelector(".topbar");
   const hero = document.querySelector(".hero-bleed");
@@ -321,5 +385,6 @@ bindItemsPickers();
 bindDirectForms();
 bindSteppedForm();
 bindWhatsAppLinks();
+bindSocialLinks();
 bindTopbarScroll();
 bindHeroParallax();

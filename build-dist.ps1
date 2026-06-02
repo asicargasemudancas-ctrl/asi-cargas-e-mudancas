@@ -16,6 +16,7 @@ New-Item -ItemType Directory -Path $dist | Out-Null
 # 1) HTML pages (apenas as 7 reais)
 $htmlFiles = @(
     "index.html",
+    "redes.html",
     "rotas.html",
     "orcamento.html",
     "mudanca-residencial.html",
