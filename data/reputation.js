@@ -1,7 +1,7 @@
 window.asiReputation = {
   rating: "5,0",
-  totalReviews: 127,
-  fiveStarReviews: 127,
+  totalReviews: 129,
+  fiveStarReviews: 129,
   hasVerifiedFiveStarVolume: true,
   openingHours: "6h \u00e0s 22h, todos os dias",
   googleProfileUrl: "https://share.google/MCQiNjmbHnPvi8Kwo",

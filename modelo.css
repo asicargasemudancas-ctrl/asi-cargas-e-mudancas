@@ -88,7 +88,8 @@
 .reviews-more:hover { color: var(--gold); border-color: var(--gold); }
 
 /* Reviews marquee — esteira infinita right-to-left, pausa no hover */
-.review-list.is-marquee { display: block; overflow: hidden; position: relative; padding: 4px 0; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%); }
+.review-board > .review-list { min-width: 0; }
+.review-list.is-marquee { display: block; min-width: 0; max-width: 100%; overflow: hidden; position: relative; padding: 4px 0; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 7%, #000 93%, transparent 100%); }
 .review-track { display: flex; gap: 22px; width: max-content; will-change: transform; }
 .review-track .rev-card { flex: 0 0 320px; min-width: 320px; }
 .review-list.is-marquee + .reviews-pager { display: none; }
