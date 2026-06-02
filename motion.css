@@ -1,0 +1,169 @@
+html {
+  scroll-padding-top: 96px;
+}
+
+section,
+footer {
+  scroll-margin-top: 96px;
+}
+
+.motion-ready .reveal-target {
+  opacity: 1;
+  transform: translateY(22px);
+  transition:
+    opacity .72s cubic-bezier(.2, .8, .2, 1),
+    transform .72s cubic-bezier(.2, .8, .2, 1);
+  transition-delay: calc(var(--reveal-index, 0) * 54ms);
+}
+
+.motion-ready .reveal-target.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.btn,
+.hs-submit,
+.op-cta,
+.text-link,
+.footer-whatsapp {
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    filter .2s ease,
+    color .2s ease;
+}
+
+.btn:hover,
+.hs-submit:hover,
+.footer-whatsapp:hover {
+  transform: translateY(-2px);
+}
+
+.btn-whatsapp:hover {
+  box-shadow: 0 16px 34px rgba(18, 165, 56, .28);
+}
+
+.btn-outline:hover {
+  box-shadow: 0 16px 34px rgba(255, 193, 7, .14);
+}
+
+.hs-field,
+.quote-section form label {
+  position: relative;
+}
+
+.hs-field::after,
+.quote-section form label::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .24s ease;
+}
+
+.quote-section form label::after {
+  left: 0;
+  right: 0;
+}
+
+.hs-field:focus-within::after,
+.hs-field.has-value::after,
+.quote-section form label:focus-within::after,
+.quote-section form label.has-value::after {
+  transform: scaleX(1);
+}
+
+.hs-field.has-value .hs-label,
+.quote-section form label.has-value {
+  color: var(--navy);
+}
+
+.method-steps li {
+  position: relative;
+  transition:
+    background .32s ease,
+    box-shadow .32s ease,
+    opacity .32s ease;
+}
+
+.method-steps li.is-current {
+  background: rgba(255, 255, 255, .055);
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
+.method-steps li:not(.is-current) {
+  opacity: .82;
+}
+
+.lead-routing.score-bumped {
+  animation: scorePulse .5s cubic-bezier(.2, .8, .2, 1);
+}
+
+@keyframes scorePulse {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+
+/* Method timeline line — preenchida via GSAP ScrollTrigger scrub */
+.method-steps.has-gsap-line {
+  --line-fill: 0%;
+  position: relative;
+}
+.method-steps.has-gsap-line::before {
+  content: "";
+  position: absolute;
+  left: 38px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--gold) 0%, var(--gold) var(--line-fill), rgba(255, 255, 255, .12) var(--line-fill), rgba(255, 255, 255, .12) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.method-steps.has-gsap-line li { z-index: 1; }
+.method-steps.has-gsap-line li span {
+  position: relative;
+  z-index: 2;
+  background: var(--navy);
+  padding-right: 14px;
+}
+
+/* SplitText chars do hero — perspective container pra rotateX 3D */
+h1[data-reputation="heroHeadline"] {
+  perspective: 720px;
+}
+.char-num {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 920px) {
+  .method-steps.has-gsap-line::before { left: 27px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-ready .reveal-target,
+  .btn,
+  .hs-submit,
+  .op-cta,
+  .text-link,
+  .footer-whatsapp,
+  .method-steps li,
+  .hs-field::after,
+  .quote-section form label::after {
+    transition: none;
+  }
+  .motion-ready .reveal-target {
+    opacity: 1;
+    transform: none;
+  }
+  .lead-routing.score-bumped {
+    animation: none;
+  }
+}

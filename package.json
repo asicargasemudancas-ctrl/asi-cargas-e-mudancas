@@ -1,0 +1,7 @@
+{
+  "name": "asi-cargas-e-mudancas",
+  "private": true,
+  "scripts": {
+    "build": "node build-dist.mjs"
+  }
+}

@@ -1,0 +1,44 @@
+# QA / auditoria — prints, dumps, frames
+_audit-shots/
+_checks/
+qa-*.png
+*.v1.html
+*.v1.css
+
+# Pastas de trabalho fora do site público
+proposal/
+presentation-seo/
+video-production/
+.claude/
+tools/
+tools/_frames/
+tools/_*.html
+tools/_*.png
+
+# Docs internas
+DESIGN.md
+PRODUCT.md
+asi-mix-contact-sheet.jpg
+assets/context-pack-asi/AGENT_PROMPT.md
+
+# CSS legacy não-linkados
+art-direction.css
+door.css
+door.v1.css
+editorial.css
+redesign.css
+redesign-motion.css
+redesign-sections.css
+styles.css
+styles.v1.css
+
+# Runtime / build / SO
+server.pid
+server-preview.pid
+dist/
+node_modules/
+.wrangler/
+.vercel/
+.DS_Store
+Thumbs.db
+*.log

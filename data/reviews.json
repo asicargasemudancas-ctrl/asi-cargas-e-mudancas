@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Adeisa Guimarães Carvalho",
+    "initials": "A",
+    "color": "r",
+    "rating": 5,
+    "when": "Editado 2 meses atrás",
+    "type": "residencial",
+    "tag": "RESIDENCIAL · TERCEIRA MUDANÇA COM ASI",
+    "text": "A equipe liderada pelo Alexandre é de um profissionalismo enorme. Os móveis mais delicados receberam atenção redobrada, com envelopamento para evitar danos. Já estamos na nossa terceira mudança com Alexandre."
+  },
+  {
+    "name": "Pierri Emanoel de Abreu Oliveira",
+    "initials": "P",
+    "color": "b",
+    "rating": 5,
+    "when": "5 meses atrás · Local Guide",
+    "type": "residencial",
+    "tag": "RESIDENCIAL · LOCAL GUIDE GOOGLE",
+    "text": "Desde o primeiro contato ele foi extremamente atencioso, respondeu todas as dúvidas, pontual e cuidadoso com todo o processo da mudança, além de flexível com as necessidades que apresentei."
+  },
+  {
+    "name": "Marcelo Giacomini",
+    "initials": "M",
+    "color": "y",
+    "rating": 5,
+    "when": "Um ano atrás · Local Guide",
+    "type": "residencial",
+    "tag": "RESIDENCIAL · PONTUALIDADE CONFIRMADA",
+    "text": "Desde a consulta sobre valores, o Sr. Alexandre foi super prestativo. Pontualíssimo no horário acertado, fez minha mudança com muito zelo. É o tipo de profissional raro de se encontrar hoje em dia."
+  },
+  {
+    "name": "Caio Peixoto",
+    "initials": "C",
+    "color": "g",
+    "rating": 5,
+    "when": "Um ano atrás",
+    "type": "comercial",
+    "tag": "COMERCIAL · MUDANÇA PARA EDIFÍCIO",
+    "text": "Excelente serviço de frete. A equipe foi extremamente cuidadosa com cada móvel na minha mudança para um edifício e demonstrou um grande compromisso."
+  },
+  {
+    "name": "RB Clothing",
+    "initials": "R",
+    "color": "b",
+    "rating": 5,
+    "when": "2 meses atrás",
+    "type": "comercial",
+    "tag": "COMERCIAL · CHEGOU TUDO CERTINHO",
+    "text": "Alexandre está de parabéns! Fez todo o combinado na nossa mudança, a todo momento envolvido no processo, informando e explicando tudo. Chegou tudo certinho! Recomendamos demais!"
+  },
+  {
+    "name": "Paulo Ricardo",
+    "initials": "P",
+    "color": "r",
+    "rating": 5,
+    "when": "10 meses atrás",
+    "type": "residencial",
+    "tag": "RESIDENCIAL · ZELO E AGILIDADE",
+    "text": "Ótimo atendimento, muito zelo no cuidado dos móveis, na organização e sem contar a agilidade em carregar e descarregar. Recomendo demais."
+  },
+  {
+    "name": "Pedro Henrique Lopes",
+    "initials": "P",
+    "color": "y",
+    "rating": 5,
+    "when": "Um ano atrás · Local Guide",
+    "type": "residencial",
+    "tag": "RESIDENCIAL · LOCAL GUIDE GOOGLE",
+    "text": "Parabéns sr. Alexandre e sua equipe pelo profissionalismo, zelo, qualidade no atendimento e pontualidade."
+  },
+  {
+    "name": "Emerson Damasceno de Oliveira",
+    "initials": "E",
+    "color": "g",
+    "rating": 5,
+    "when": "6 meses atrás",
+    "type": "residencial",
+    "tag": "RESIDENCIAL · EQUIPE PONTUAL E ZELOSA",
+    "text": "Muito profissionalismo e simpatia de toda a equipe. São pontuais e muito zelosos com os móveis. Recomendo o serviço."
+  },
+  {
+    "name": "GSHOP — Cosméticos Veganos",
+    "initials": "G",
+    "color": "b",
+    "rating": 5,
+    "when": "6 meses atrás",
+    "type": "comercial",
+    "tag": "COMERCIAL · NOTA MIL",
+    "text": "Seu Alexandre super pontual, solícito, educado e profissional. Nota MIL!"
+  },
+  {
+    "name": "Edlúcia Costa",
+    "initials": "E",
+    "color": "r",
+    "rating": 5,
+    "when": "10 meses atrás · Local Guide",
+    "type": "residencial",
+    "tag": "RESIDENCIAL · INDICO FORTEMENTE",
+    "text": "Gostei muito do serviço oferecido. Houve comprometimento, pontualidade e atenção no processo de mudança. Indico fortemente."
+  }
+]

@@ -1,0 +1,41 @@
+/* Form em etapas (stepped) — usado no orcamento.html */
+.quick-quote.stepped { display: block; position: relative; padding: 26px; background: #fff; border-radius: 0; border-top: 2px solid var(--navy); border-bottom: 2px solid var(--gold); border-left: 0; border-right: 0; box-shadow: 0 26px 60px rgba(13,24,61,.10); }
+.quick-quote.stepped::before { content: "Or\E7amento"; position: absolute; top: -12px; left: 22px; padding: 4px 10px; background: var(--paper); color: var(--navy); font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 2.4px; text-transform: uppercase; }
+
+.qq-progress { display: grid; gap: 8px; margin-bottom: 22px; }
+.qq-progress .dots { display: flex; gap: 6px; }
+.qq-progress .dot { flex: 1; height: 4px; background: rgba(13, 24, 61, .12); border-radius: 999px; transition: background .25s ease; }
+.qq-progress .dot.is-active { background: var(--gold); }
+.qq-step-label { color: var(--royal); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 1.6px; text-transform: uppercase; }
+
+.qq-step { display: none; padding: 0; margin: 0; border: 0; }
+.qq-step.is-active { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+.qq-step legend { grid-column: 1 / -1; margin-bottom: 4px; color: var(--royal); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+.qq-step label:not(.qq-radio label):not(.qq-checks label) { display: grid; gap: 6px; color: var(--navy); font-size: 12px; font-weight: 800; }
+.qq-step input, .qq-step select { background: transparent; border: 0; border-bottom: 1px solid rgba(13, 24, 61, .20); border-radius: 0; padding: 0 0 6px; min-height: 40px; font-size: 15px; transition: border-color .2s ease; }
+.qq-step input:focus, .qq-step select:focus { outline: 0; border-bottom-color: var(--gold); }
+
+.qq-radio, .qq-checks { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.qq-radio-label { width: 100%; color: var(--navy); font-size: 12px; font-weight: 800; letter-spacing: .2px; text-transform: uppercase; }
+.qq-radio label, .qq-checks label { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; background: #fff; border: 1px solid rgba(13, 24, 61, .14); border-radius: 999px; color: var(--navy); font-size: 13px; font-weight: 600; cursor: pointer; transition: border-color .2s ease, background .2s ease; }
+.qq-radio label:hover, .qq-checks label:hover { border-color: var(--gold); }
+.qq-radio input, .qq-checks input { accent-color: var(--royal); }
+
+.qq-score { display: none; margin-top: 18px; padding: 16px; background: linear-gradient(135deg, rgba(255, 193, 7, .14), rgba(29, 79, 179, .08)); border: 1px solid rgba(255, 193, 7, .35); border-radius: 8px; color: var(--navy); font-size: 13px; }
+.quick-quote.stepped[data-step="3"] .qq-score,
+.quick-quote.stepped[data-step="4"] .qq-score { display: block; }
+.qq-score strong { display: block; font-family: var(--font-display); font-style: italic; font-size: 17px; margin-bottom: 4px; }
+
+.qq-actions { display: flex; gap: 12px; margin-top: 22px; }
+.qq-actions .btn { flex: 1; min-height: 48px; padding: 0 22px; border: 1px solid transparent; border-radius: 7px; font-weight: 900; cursor: pointer; transition: transform .18s ease, background .18s ease; }
+.qq-actions .btn:hover { transform: translateY(-1px); }
+.btn-ghost { background: transparent; border: 1px solid rgba(13, 24, 61, .20); color: var(--navy); }
+.btn-ghost:hover { background: rgba(13, 24, 61, .04); }
+.btn-primary { background: var(--gold); color: var(--navy); }
+
+.qq-micro { margin-top: 14px; color: var(--muted); font-size: 12px; font-weight: 600; text-align: center; letter-spacing: .2px; }
+
+@media (max-width: 920px) {
+  .qq-step.is-active { grid-template-columns: 1fr; }
+  .quick-quote.stepped { padding: 22px 18px; }
+}
