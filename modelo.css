@@ -86,6 +86,10 @@
 .rev-card p { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 16px; line-height: 1.55; color: #1d2944; }
 .reviews-more { display: inline-block; margin: 28px 0 0; color: var(--royal); font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; border-bottom: 1px solid rgba(14,47,109,.36); padding-bottom: 4px; transition: color .2s ease, border-color .2s ease; }
 .reviews-more:hover { color: var(--gold); border-color: var(--gold); }
+.reviews-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line); }
+.reviews-cta .btn { min-height: 46px; }
+.reviews-social { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 16px; color: var(--royal); background: #fff; border: 1px solid var(--line); border-radius: 999px; font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; transition: border-color .2s ease, color .2s ease, transform .2s ease; }
+.reviews-social:hover { color: var(--navy); border-color: var(--gold); transform: translateY(-1px); }
 
 /* Reviews marquee — esteira infinita right-to-left, pausa no hover */
 .review-board > .review-list { min-width: 0; }
@@ -131,6 +135,9 @@
   .quote-section .check-row { gap: 8px 12px; font-size: 12px; }
   .quote-section .quote-note { font-size: 9.5px; letter-spacing: 1px; }
   .quote-section form .btn { min-height: 50px; font-size: 14px; }
+  .reviews-cta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .reviews-cta .btn { grid-column: 1 / -1; width: 100%; }
+  .reviews-social { min-height: 42px; padding: 0 12px; font-size: 10px; }
   .reviews-pager { flex-direction: column; gap: 10px; align-items: stretch; padding-top: 18px; margin-top: 22px; }
   .rev-pg-btn { width: 100%; justify-content: center; padding: 10px 12px; }
   .rev-pg-meta { text-align: center; font-size: 16px; }
@@ -166,8 +173,8 @@ form .full, form .quote-note { grid-column: 1 / -1; }
 
 /* Op cards hover reveal "Saiba mais →" (touch devices = sempre visivel) */
 .op-card > div { position: relative; padding-bottom: 48px; }
-.op-card .op-cta { position: absolute; left: 24px; bottom: 22px; color: var(--royal); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; opacity: 0; transform: translateX(-4px); transition: opacity .2s ease, transform .2s ease, color .15s ease; }
-.op-card:hover .op-cta { opacity: 1; transform: translateX(0); color: var(--gold); }
+.op-card .op-cta { position: absolute; left: 24px; bottom: 22px; color: var(--royal); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; opacity: 1; transform: none; transition: color .15s ease; }
+.op-card:hover .op-cta { color: var(--gold); }
 .op-card .op-cta::after { content: " \2192"; }
 @media (hover: none) { .op-card .op-cta { opacity: 1; transform: none; color: var(--royal); } }
 

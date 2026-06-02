@@ -1,6 +1,7 @@
 const phone = "5587981703225";
 const utm = "utm_source=site-asi&utm_medium=whatsapp&utm_campaign=lead-organico";
-const fallbackWhatsApp = `https://wa.me/${phone}`;
+const fallbackMessage = "Ol\u00e1, vim pelo site da ASI - Alexandre Solu\u00e7\u00f5es Integradas.\nQuero falar com o Sr. Alexandre sobre uma mudan\u00e7a.";
+const fallbackWhatsApp = `https://wa.me/${phone}?text=${encodeURIComponent(fallbackMessage)}&${utm}`;
 
 function makeRef() {
   return `ASI-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -85,6 +86,16 @@ function leadType(score) {
 }
 
 function openWhatsApp(source, payload = {}) {
+  const prepared = composeWhatsAppUrl(source, payload);
+  try {
+    localStorage.setItem("asi_request", JSON.stringify({ ...prepared.data, ref: prepared.ref, source }));
+  } catch {
+    // Se o navegador bloquear storage, o WhatsApp ainda deve abrir normalmente.
+  }
+  window.open(prepared.url, "_blank", "noopener,noreferrer");
+}
+
+function composeWhatsAppUrl(source, payload = {}) {
   const ctx = context();
   const data = { ...ctx, ...payload };
   data.service = payload.service || ctx.service;
@@ -116,13 +127,11 @@ function openWhatsApp(source, payload = {}) {
     line("Origem do clique", source),
     line("P\u00e1gina", data.url)
   ];
-  try {
-    localStorage.setItem("asi_request", JSON.stringify({ ...data, ref, source }));
-  } catch {
-    // Se o navegador bloquear storage, o WhatsApp ainda deve abrir normalmente.
-  }
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(lines.join("\n"))}&${utm}`;
-  window.open(url, "_blank", "noopener,noreferrer");
+  return {
+    data,
+    ref,
+    url: `https://wa.me/${phone}?text=${encodeURIComponent(lines.join("\n"))}&${utm}`
+  };
 }
 
 function bindItemsPickers() {
@@ -248,7 +257,24 @@ function bindServiceChoices() {
 
 function bindWhatsAppLinks() {
   document.querySelectorAll("[data-whatsapp]").forEach((linkEl) => {
-    if (!linkEl.getAttribute("href") || linkEl.getAttribute("href") === "#") linkEl.href = fallbackWhatsApp;
+    const source = linkEl.dataset.src || "site";
+    const current = context();
+    const previewData = {
+      page: current.page,
+      url: current.url,
+      service: linkEl.dataset.service || current.service,
+      route: linkEl.dataset.route || current.route
+    };
+    linkEl.href = composeWhatsAppUrl(source, previewData).url || fallbackWhatsApp;
+    linkEl.target = "_blank";
+    const rel = new Set((linkEl.getAttribute("rel") || "").split(/\s+/).filter(Boolean));
+    rel.add("noopener");
+    rel.add("noreferrer");
+    linkEl.setAttribute("rel", [...rel].join(" "));
+    if (!linkEl.getAttribute("aria-label")) {
+      const label = linkEl.textContent.trim() || "Falar pelo WhatsApp";
+      linkEl.setAttribute("aria-label", `${label} com a ASI pelo WhatsApp`);
+    }
     linkEl.addEventListener("click", (event) => {
       event.preventDefault();
       const current = context();
@@ -259,7 +285,7 @@ function bindWhatsAppLinks() {
         service: linkEl.dataset.service || current.service,
         route: linkEl.dataset.route || current.route
       };
-      openWhatsApp(linkEl.dataset.src || "site", data);
+      openWhatsApp(source, data);
     });
   });
 }

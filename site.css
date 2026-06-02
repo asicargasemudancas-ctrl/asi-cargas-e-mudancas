@@ -65,6 +65,36 @@ nav a:first-child::after {
   background: var(--gold);
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+.topbar-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 13px;
+  color: rgba(255,255,255,.86);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  transition: color .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.topbar-social:hover {
+  color: #fff;
+  border-color: rgba(255,193,7,.62);
+  background: rgba(255,255,255,.08);
+}
+
 .whatsapp-cta, .btn {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 48px; padding: 0 22px;
@@ -277,8 +307,12 @@ form .btn { grid-column: 1 / -1; width: 100%; }
   .brand strong { font-size: 16px; letter-spacing: 0; }
   .brand span { font-size: 9px; letter-spacing: 1.2px; }
   nav { display: none; }
+  .topbar-actions { gap: 6px; }
+  .topbar-social { width: 40px; min-height: 40px; padding: 0; font-size: 0; }
+  .topbar-social:nth-child(1)::after { content: "IG"; font-size: 11px; }
+  .topbar-social:nth-child(2)::after { content: "FB"; font-size: 11px; }
   .whatsapp-cta { width: auto; min-height: 40px; padding: 0 14px; border-radius: 999px; font-size: 0; white-space: nowrap; box-shadow: 0 10px 22px rgba(255, 193, 7, .18); }
-  .whatsapp-cta::after { content: "Cotar"; font-size: 13px; }
+  .whatsapp-cta::after { content: "WhatsApp"; font-size: 12px; }
   .wrap { width: min(100% - 28px, 560px); }
   .hero-grid { grid-template-columns: 1fr; min-height: auto; }
   .hero-copy { order: 2; padding: 26px 0 44px; }
