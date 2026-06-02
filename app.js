@@ -83,8 +83,46 @@ function whatsappIntent(source) {
     hero_orcamento: "Quero pedir um or\u00e7amento de mudan\u00e7a.",
     hero_fotos: "Quero mandar fotos e detalhes da minha mudan\u00e7a.",
     reviews_cta: "Vi as avalia\u00e7\u00f5es da ASI no site e quero pedir um or\u00e7amento.",
+    founder: "Quero falar diretamente com o Sr. Alexandre sobre minha mudan\u00e7a.",
+    op_bau: "Quero entender como a ASI organiza e protege os itens no ba\u00fa.",
+    op_equipe: "Quero saber sobre equipe, carregamento e cuidados no dia da mudan\u00e7a.",
+    op_embalagem: "Quero saber sobre embalagem e prote\u00e7\u00e3o dos meus m\u00f3veis.",
+    metodo_rota: "Quero enviar origem, destino e volume para avaliar minha rota.",
     footer: "Quero falar com a ASI sobre uma mudan\u00e7a.",
-    footer_direct: "Quero falar diretamente com o Sr. Alexandre."
+    footer_direct: "Quero falar diretamente com o Sr. Alexandre.",
+    residencial_header: "Quero cotar uma mudan\u00e7a residencial.",
+    residencial_hero: "Quero cotar uma mudan\u00e7a residencial.",
+    residencial_panel: "Quero mandar fotos e detalhes de uma mudan\u00e7a residencial.",
+    residencial_footer: "Quero falar sobre uma mudan\u00e7a residencial.",
+    comercial_header: "Quero cotar uma mudan\u00e7a comercial.",
+    comercial_hero: "Quero cotar uma mudan\u00e7a comercial.",
+    comercial_panel: "Quero mandar fotos e detalhes de uma mudan\u00e7a comercial.",
+    comercial_footer: "Quero falar sobre uma mudan\u00e7a comercial.",
+    interestadual_header: "Quero consultar uma mudan\u00e7a interestadual.",
+    interestadual_hero: "Quero consultar uma mudan\u00e7a interestadual.",
+    interestadual_panel: "Quero mandar fotos e detalhes de uma mudan\u00e7a interestadual.",
+    interestadual_footer: "Quero falar sobre uma mudan\u00e7a interestadual.",
+    fretes_header: "Quero consultar disponibilidade para frete ou carga.",
+    fretes_hero: "Quero consultar disponibilidade para frete ou carga.",
+    fretes_panel: "Quero mandar fotos e detalhes de um frete ou carga.",
+    fretes_footer: "Quero falar sobre frete ou carga.",
+    embalagem_header: "Quero pedir embalagem e montagem para minha mudan\u00e7a.",
+    embalagem_hero: "Quero pedir embalagem e montagem para minha mudan\u00e7a.",
+    embalagem_panel: "Quero mandar fotos dos m\u00f3veis e itens fr\u00e1geis para avaliar embalagem.",
+    embalagem_footer: "Quero falar sobre embalagem e montagem.",
+    rotas_header: "Quero consultar uma rota com a ASI.",
+    rotas_hero: "Quero consultar uma rota com a ASI.",
+    rotas_panel: "Quero enviar origem, destino, volume e data para avaliar a rota.",
+    rotas_footer: "Quero falar sobre uma rota com a ASI.",
+    rota_juazeiro: "Quero cotar a rota Petrolina para Juazeiro.",
+    rota_recife: "Quero cotar a rota Petrolina para Recife.",
+    rota_salvador: "Quero cotar a rota Petrolina para Salvador.",
+    rota_fortaleza: "Quero cotar a rota Petrolina para Fortaleza.",
+    rota_vale: "Quero cotar uma rota pelo Vale do S\u00e3o Francisco.",
+    rota_outras: "Quero consultar uma rota fora das op\u00e7\u00f5es principais.",
+    orcamento_header: "Quero tirar d\u00favidas sobre meu or\u00e7amento.",
+    orcamento_footer: "Quero tirar d\u00favidas sobre meu or\u00e7amento.",
+    redes_header: "Vim pela ponte de redes sociais e quero falar pelo WhatsApp."
   };
   return intents[source] || "Quero falar com o Sr. Alexandre sobre uma mudan\u00e7a.";
 }
@@ -326,6 +364,12 @@ function socialChannelFromHref(href, linkEl) {
 
 function socialSource(linkEl, ctx) {
   if (linkEl.dataset.src) return linkEl.dataset.src;
+  try {
+    const explicitSource = new URL(linkEl.getAttribute("href"), window.location.href).searchParams.get("origem");
+    if (explicitSource) return explicitSource;
+  } catch {
+    // Mantem o fallback por contexto quando o href nao puder ser lido como URL.
+  }
   if (linkEl.classList.contains("topbar-social")) return `header_${ctx.page || "home"}`;
   if (linkEl.classList.contains("reviews-social")) return "reviews_cta";
   if (linkEl.closest(".footer-col, .footer-links, footer")) return `${ctx.page || "site"}_footer`;

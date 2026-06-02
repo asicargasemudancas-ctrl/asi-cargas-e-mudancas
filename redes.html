@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="site.css" />
+    <link rel="stylesheet" href="site.css?v=20260602-ctas" />
     <link rel="stylesheet" href="pages.css" />
     <style>
       .social-bridge {
@@ -139,7 +139,7 @@
         <a href="rotas.html">Rotas</a>
         <a href="orcamento.html">Or&ccedil;amento</a>
       </nav>
-      <a class="header-cta" href="https://wa.me/5587981703225?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20ASI%20-%20Alexandre%20Solu%C3%A7%C3%B5es%20Integradas.%0AQuero%20falar%20com%20o%20Sr.%20Alexandre%20sobre%20uma%20mudan%C3%A7a." target="_blank" rel="noopener noreferrer" aria-label="Falar com a ASI pelo WhatsApp">WhatsApp</a>
+      <a class="header-cta" data-whatsapp data-src="redes_header" data-service="Contato social" href="https://wa.me/5587981703225?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20ASI%20-%20Alexandre%20Solu%C3%A7%C3%B5es%20Integradas.%0AQuero%20falar%20com%20o%20Sr.%20Alexandre%20sobre%20uma%20mudan%C3%A7a." target="_blank" rel="noopener noreferrer" aria-label="Falar com a ASI pelo WhatsApp">WhatsApp</a>
     </header>
 
     <main class="social-bridge">
@@ -151,9 +151,9 @@
         <label class="sr-only" for="socialMessage">Mensagem de rastreio</label>
         <textarea id="socialMessage" class="social-bridge__message" data-social-message readonly></textarea>
         <div class="social-bridge__actions">
-          <button class="btn btn-primary" type="button" data-copy-message>Copiar mensagem</button>
+          <button class="btn btn-primary" type="button" data-copy-message aria-label="Copiar mensagem de rastreio da rede social">Copiar mensagem</button>
           <a class="btn btn-whatsapp" href="#" data-open-social target="_blank" rel="noopener noreferrer" aria-label="Abrir rede social da ASI">Abrir rede social</a>
-          <a class="btn btn-outline" href="index.html#contato">Voltar ao site</a>
+          <a class="btn btn-outline" href="index.html#contato" aria-label="Voltar para a se&ccedil;&atilde;o de contato do site da ASI">Voltar ao site</a>
         </div>
         <div class="social-bridge__meta" aria-label="Contexto do contato">
           <span data-meta-channel>canal</span>
@@ -163,6 +163,7 @@
       </section>
     </main>
 
+    <script src="app.js"></script>
     <script>
       (function socialBridge() {
         const params = new URLSearchParams(window.location.search);
@@ -180,11 +181,36 @@
         const service = params.get("servico") || "Mudan\u00e7a";
         const route = params.get("rota") || "";
         const leadUrl = params.get("url") || document.referrer || "https://asicargasemudancas.com.br/";
+
+        function usefulService(value) {
+          const text = String(value || "").trim();
+          if (!text || text === "Contato social" || text === "Mudan\u00e7a") return "";
+          return text;
+        }
+
+        function socialIntent() {
+          const cleanService = usefulService(service);
+          if (source === "reviews_cta" || cleanService === "Avalia\u00e7\u00f5es Google") {
+            return `Vi as avalia\u00e7\u00f5es da ASI no site e quero pedir um or\u00e7amento pelo ${channelName}.`;
+          }
+          if (route) {
+            return `Quero consultar a rota ${route} pelo ${channelName}.`;
+          }
+          if (source === "header_home") {
+            return `Quero falar com o Sr. Alexandre pelo ${channelName} sobre uma mudan\u00e7a.`;
+          }
+          if (cleanService) {
+            return `Quero falar pelo ${channelName} sobre ${cleanService}.`;
+          }
+          return `Quero continuar o atendimento da ASI pelo ${channelName}.`;
+        }
+
         const lines = [
           "Ol\u00e1, vim pelo site da ASI - Alexandre Solu\u00e7\u00f5es Integradas.",
-          `Quero falar pelo ${channelName} sobre uma mudan\u00e7a.`,
+          socialIntent(),
           "",
           `Refer\u00eancia: ${ref}`,
+          `Canal: ${channelName}`,
           `Origem do clique: ${source}`,
           `P\u00e1gina: ${page}`,
           `Servi\u00e7o: ${service}`,

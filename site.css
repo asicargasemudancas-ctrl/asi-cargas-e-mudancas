@@ -299,7 +299,7 @@ form .btn { grid-column: 1 / -1; width: 100%; }
 .footer span { margin-top: 8px; color: rgba(255,255,255,.66); font-family: var(--mono); font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; }
 .footer a { color: var(--gold); font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
 
-@media (max-width: 920px) {
+@media (max-width: 1080px) {
   html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
   body { padding-bottom: 0; }
   .topbar { left: 0; right: 0; width: 100%; max-width: 100vw; height: 68px; padding: 0 14px; gap: 10px; }
