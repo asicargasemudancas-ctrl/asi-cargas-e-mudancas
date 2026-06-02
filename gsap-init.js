@@ -39,25 +39,16 @@
     }
   }
 
-  // 2. SplitText editorial nos chars italic da headline (Fraunces gold)
-  const numHero = document.querySelector('h1[data-reputation="heroHeadline"] .num-hero');
-  if (numHero && SplitText) {
-    requestAnimationFrame(() => {
-      try {
-        const split = new SplitText(numHero, { type: "chars", charsClass: "char-num" });
-        gsap.set(split.chars, { autoAlpha: 0, y: 28, rotateX: -45, transformOrigin: "50% 50% -20px" });
-        gsap.to(split.chars, {
-          autoAlpha: 1,
-          y: 0,
-          rotateX: 0,
-          duration: 0.85,
-          ease: "back.out(1.6)",
-          stagger: 0.038,
-          delay: 0.65
-        });
-      } catch (err) {
-        // SplitText falhou — char permanece estático, sem prejuízo visual
-      }
+  // 2. Entrada editorial nos trechos gold da headline sem quebrar texto critico.
+  const numHeroes = document.querySelectorAll('h1[data-reputation="heroHeadline"] .num-hero');
+  if (numHeroes.length) {
+    gsap.from(numHeroes, {
+      autoAlpha: 0,
+      y: 18,
+      duration: 0.72,
+      ease: "power3.out",
+      stagger: 0.08,
+      delay: 0.62
     });
   }
 
