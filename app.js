@@ -24,6 +24,10 @@ function savedRequest() {
   catch { return {}; }
 }
 
+function selectedServiceChoice() {
+  return document.querySelector("[data-service-choice].is-active")?.dataset.serviceChoice || "";
+}
+
 function renderReputation() {
   const rep = window.asiReputation;
   if (!rep) return;
@@ -58,14 +62,31 @@ function readForm(form) {
   data.extras = fd.getAll("extras").filter(Boolean);
   data.items = fd.getAll("items").filter(Boolean);
   if (!data.volume && data.items.length) data.volume = `${data.items.length} itens pesados`;
-  data.service = data.service || ctx.service;
+  const formService = form.closest(".quote-section") ? selectedServiceChoice() : "";
+  data.service = data.service || formService || ctx.service;
   data.route = data.route || ctx.route;
   data.formSource = form.dataset.src || form.id || "form";
   return data;
 }
 
 function line(label, value) {
-  return value ? `${label}: ${value}` : `${label}:`;
+  return value ? `${label}: ${value}` : "";
+}
+
+function isStructuredLeadSource(source) {
+  return String(source || "").startsWith("form_");
+}
+
+function whatsappIntent(source) {
+  const intents = {
+    header_home: "Quero falar com o Sr. Alexandre sobre uma mudan\u00e7a.",
+    hero_orcamento: "Quero pedir um or\u00e7amento de mudan\u00e7a.",
+    hero_fotos: "Quero mandar fotos e detalhes da minha mudan\u00e7a.",
+    reviews_cta: "Vi as avalia\u00e7\u00f5es da ASI no site e quero pedir um or\u00e7amento.",
+    footer: "Quero falar com a ASI sobre uma mudan\u00e7a.",
+    footer_direct: "Quero falar diretamente com o Sr. Alexandre."
+  };
+  return intents[source] || "Quero falar com o Sr. Alexandre sobre uma mudan\u00e7a.";
 }
 
 function scoreLead(data) {
@@ -106,28 +127,29 @@ function composeWhatsAppUrl(source, payload = {}) {
   const extras = Array.isArray(data.extras) ? data.extras.join(", ") : data.extras;
   const items = Array.isArray(data.items) ? data.items.join(", ") : data.items;
   const score = scoreLead(data);
+  const structured = isStructuredLeadSource(source);
   const lines = [
     "Ol\u00e1, vim pelo site da ASI - Alexandre Solu\u00e7\u00f5es Integradas.",
-    "Quero enviar um pedido com rota e volume.",
+    structured ? "Quero enviar um pedido com rota e volume." : whatsappIntent(source),
     "",
     line("Refer\u00eancia", ref),
-    line("Status do pedido", leadType(score)),
+    structured ? line("Status do pedido", leadType(score)) : "",
     line("Servi\u00e7o", data.service),
     line("Rota", data.route),
-    line("Origem", data.origin),
-    line("Destino", data.destination),
-    line("Data desejada", data.date),
-    line("Urg\u00eancia", data.urgency),
-    line("Volume", data.volume),
-    line("Itens pesados", items),
-    line("Acesso/observa\u00e7\u00f5es", access),
-    line("Extras", extras),
-    line("Nome", data.name),
-    line("Meu WhatsApp", data.phone),
+    structured ? line("Origem", data.origin) : "",
+    structured ? line("Destino", data.destination) : "",
+    structured ? line("Data desejada", data.date) : "",
+    structured ? line("Urg\u00eancia", data.urgency) : "",
+    structured ? line("Volume", data.volume) : "",
+    structured ? line("Itens pesados", items) : "",
+    structured ? line("Acesso/observa\u00e7\u00f5es", access) : "",
+    structured ? line("Extras", extras) : "",
+    structured ? line("Nome", data.name) : "",
+    structured ? line("Meu WhatsApp", data.phone) : "",
     "",
     line("Origem do clique", source),
     line("P\u00e1gina", data.url)
-  ];
+  ].filter(Boolean);
   return {
     data,
     ref,
@@ -246,11 +268,11 @@ function bindServiceChoices() {
   const buttons = [...document.querySelectorAll("[data-service-choice]")];
   if (!buttons.length) return;
   const active = buttons.find((button) => button.classList.contains("is-active")) || buttons[0];
-  document.body.dataset.service = active.dataset.serviceChoice;
+  document.body.dataset.selectedService = active.dataset.serviceChoice;
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
       buttons.forEach((item) => item.classList.toggle("is-active", item === button));
-      document.body.dataset.service = button.dataset.serviceChoice;
+      document.body.dataset.selectedService = button.dataset.serviceChoice;
       document.querySelectorAll("[data-quote-form]").forEach(updateLiveScore);
     });
   });
