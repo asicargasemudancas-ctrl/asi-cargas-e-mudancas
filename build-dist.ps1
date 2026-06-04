@@ -51,6 +51,7 @@ foreach ($f in $cssFiles) {
 
 # 3) JS ativos
 $jsFiles = @(
+    "analytics.js",
     "app.js",
     "motion.js",
     "reviews.js",

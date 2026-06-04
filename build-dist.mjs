@@ -28,6 +28,7 @@ const cssFiles = [
 ];
 
 const jsFiles = [
+  "analytics.js",
   "app.js",
   "motion.js",
   "reviews.js",

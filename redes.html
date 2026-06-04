@@ -163,6 +163,7 @@
       </section>
     </main>
 
+    <script src="analytics.js"></script>
     <script src="app.js"></script>
     <script>
       (function socialBridge() {
@@ -225,6 +226,18 @@
         const copyEl = document.querySelector("[data-copy-message]");
         const titleEl = document.getElementById("socialBridgeTitle");
 
+        function trackSocialBridge(eventName, extra = {}) {
+          window.asiAnalytics?.track(eventName, {
+            channel,
+            source,
+            page,
+            service,
+            route,
+            lead_ref_present: ref ? "yes" : "no",
+            ...extra
+          });
+        }
+
         messageEl.value = message;
         openEl.href = destinations[channel];
         openEl.textContent = `Abrir ${channelName}`;
@@ -233,6 +246,7 @@
         document.querySelector("[data-meta-channel]").textContent = `canal: ${channel}`;
         document.querySelector("[data-meta-source]").textContent = `origem: ${source}`;
         document.querySelector("[data-meta-ref]").textContent = `ref: ${ref}`;
+        trackSocialBridge("social_bridge_view");
 
         function selectMessage() {
           messageEl.focus();
@@ -243,17 +257,21 @@
           try {
             await navigator.clipboard.writeText(message);
             statusEl.textContent = "Mensagem copiada";
+            trackSocialBridge("social_message_copy", { copy_status: "success" });
           } catch {
             selectMessage();
             statusEl.textContent = "Copie a mensagem selecionada";
+            trackSocialBridge("social_message_copy", { copy_status: "manual" });
           }
         }
 
+        openEl.addEventListener("click", () => trackSocialBridge("social_outbound_click"));
         copyEl.addEventListener("click", copyMessage);
         copyMessage();
         if (autoRedirect) {
           window.setTimeout(() => {
             statusEl.textContent = `Redirecionando para ${channelName}`;
+            trackSocialBridge("social_auto_redirect");
             window.location.href = destinations[channel];
           }, 1700);
         }

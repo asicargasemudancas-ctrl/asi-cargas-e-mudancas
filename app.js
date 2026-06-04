@@ -24,6 +24,18 @@ function savedRequest() {
   catch { return {}; }
 }
 
+function analyticsTrack(eventName, params = {}) {
+  const tracker = window.asiAnalytics;
+  if (!tracker || typeof tracker.track !== "function") return;
+  const ctx = context();
+  tracker.track(eventName, {
+    page: params.page || ctx.page,
+    service: params.service || ctx.service,
+    route: params.route || ctx.route,
+    ...params
+  });
+}
+
 function selectedServiceChoice() {
   return document.querySelector("[data-service-choice].is-active")?.dataset.serviceChoice || "";
 }
@@ -145,8 +157,36 @@ function leadType(score) {
   return "faltam dados";
 }
 
+function leadAnalyticsParams(source, data = {}) {
+  const score = scoreLead(data);
+  const itemCount = Array.isArray(data.items) ? data.items.length : 0;
+  const hasExtras = Array.isArray(data.extras) ? data.extras.length > 0 : Boolean(data.extras);
+  return {
+    source,
+    page: data.page,
+    service: data.service,
+    route: data.route,
+    structured_lead: isStructuredLeadSource(source) ? "yes" : "no",
+    lead_score: score,
+    lead_type: leadType(score),
+    has_origin: data.origin ? "yes" : "no",
+    has_destination: data.destination ? "yes" : "no",
+    has_date: data.date ? "yes" : "no",
+    has_phone: data.phone ? "yes" : "no",
+    has_volume: data.volume ? "yes" : "no",
+    has_extras: hasExtras ? "yes" : "no",
+    item_count: itemCount,
+    urgency: data.urgency || ""
+  };
+}
+
 function openWhatsApp(source, payload = {}) {
   const prepared = composeWhatsAppUrl(source, payload);
+  const eventParams = leadAnalyticsParams(source, prepared.data);
+  analyticsTrack("whatsapp_click", eventParams);
+  if (isStructuredLeadSource(source)) {
+    analyticsTrack("generate_lead", eventParams);
+  }
   try {
     localStorage.setItem("asi_request", JSON.stringify({ ...prepared.data, ref: prepared.ref, source }));
   } catch {
@@ -417,6 +457,16 @@ function bindSocialLinks() {
       linkEl.setAttribute("aria-label", `Abrir ${label} da ASI com rastreio do site`);
     }
     linkEl.addEventListener("click", updateHref);
+    linkEl.addEventListener("click", () => {
+      const current = context();
+      analyticsTrack("social_click", {
+        channel,
+        source: socialSource(linkEl, current),
+        page: current.page,
+        service: linkEl.dataset.service || current.service,
+        route: linkEl.dataset.route || current.route
+      });
+    });
   });
 }
 
