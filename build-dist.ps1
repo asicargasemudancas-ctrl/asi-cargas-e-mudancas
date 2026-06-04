@@ -84,8 +84,8 @@ Get-ChildItem -Recurse -File $assetsRoot | Where-Object { $assetExtensions -cont
     Copy-Item $_.FullName $target
 }
 
-# 6) robots.txt + sitemap.xml
-foreach ($f in @("robots.txt", "sitemap.xml")) {
+# 6) robots.txt + sitemap.xml + verificacoes externas
+foreach ($f in @("robots.txt", "sitemap.xml", "google73d03fb6322c1931.html")) {
     if (Test-Path (Join-Path $root $f)) {
         Copy-Item (Join-Path $root $f) $dist
     }

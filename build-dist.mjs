@@ -110,7 +110,7 @@ for (const file of jsFiles) copyFile(file);
 copyDirectory("data");
 copyPublicAssets("assets");
 
-for (const file of ["robots.txt", "sitemap.xml"]) copyFile(file);
+for (const file of ["robots.txt", "sitemap.xml", "google73d03fb6322c1931.html"]) copyFile(file);
 
 const files = fs.readdirSync(dist, { recursive: true, withFileTypes: true });
 const fileCount = files.filter((entry) => entry.isFile()).length;
