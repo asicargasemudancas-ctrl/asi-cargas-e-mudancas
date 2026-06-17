@@ -484,6 +484,26 @@ body: payload,
 keepalive: true
 }).catch(() => {});
 }
+function trackQualifiedLead(lead) {
+window.asiAnalytics?.track("generate_lead", {
+source: "orcamento_submit",
+form_version: lead.form_version,
+service_type: lead.service_type,
+intent: lead.intent,
+route_type: lead.route_type,
+operation_region: lead.operation_region,
+state_pair: lead.state_pair,
+lead_score: lead.score,
+lead_status: lead.status,
+has_origin: lead.origin_city && lead.origin_state ? "yes" : "no",
+has_destination: lead.destination_city && lead.destination_state ? "yes" : "no",
+has_volume: lead.inventory_text || lead.large_items.length || lead.volume_size ? "yes" : "no",
+has_phone: lead.phone ? "yes" : "no",
+utm_source: lead.utm?.utm_source,
+utm_campaign: lead.utm?.utm_campaign,
+utm_content: lead.utm?.utm_content
+});
+}
 function setSummaryCard(name, ready, text) {
 summaryCards[name].classList.toggle("is-ready", ready);
 summaryTexts[name].textContent = text;
@@ -609,6 +629,7 @@ if (!validateStep(currentStep) || !form.reportValidity()) return;
 const { lead, message } = updateSummary();
 persistLead(lead);
 sendToSheet(lead);
+trackQualifiedLead(lead);
 openWhatsApp(message);
 });
 }
