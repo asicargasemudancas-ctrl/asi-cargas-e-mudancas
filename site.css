@@ -109,7 +109,7 @@ nav a:first-child::after {
   color: #fff;
   border: 0;
   background: var(--social-bg);
-  box-shadow: 0 10px 22px var(--social-shadow);
+  box-shadow: 0 5px 14px rgba(3, 12, 33, .5);
   font-family: var(--font);
   font-size: 0;
   font-weight: 900;
@@ -119,12 +119,12 @@ nav a:first-child::after {
 }
 
 .topbar-social:hover {
-  filter: saturate(1.1) brightness(1.05);
-  box-shadow: 0 22px 46px var(--social-shadow);
+  filter: saturate(1.06) brightness(1.04);
+  box-shadow: 0 8px 20px rgba(3, 12, 33, .55);
 }
 
 .topbar-social[data-social="facebook"] { border-radius: 50%; }
-.topbar-social[data-social="instagram"] { border-radius: 13px; }
+.topbar-social[data-social="instagram"] { width: 43px; height: 43px; border-radius: 12px; }
 
 .whatsapp-cta, .btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -157,7 +157,7 @@ nav a:first-child::after {
   border: 0;
   border-radius: 50%;
   background: var(--brand-whatsapp);
-  box-shadow: 0 10px 22px rgba(37, 211, 102, .3);
+  box-shadow: 0 5px 14px rgba(3, 12, 33, .5);
   font-size: 0;
   line-height: 1;
   overflow: visible;
@@ -190,9 +190,9 @@ nav a:first-child::after {
   -webkit-mask: var(--social-icon) center / contain no-repeat;
   mask: var(--social-icon) center / contain no-repeat;
 }
-.topbar-social[data-social="facebook"]::before { width: 24px; height: 24px; }
-.topbar-social[data-social="instagram"]::before { width: 26px; height: 26px; }
-.topbar-actions .whatsapp-cta::before { width: 26px; height: 26px; }
+.topbar-social[data-social="facebook"]::before { width: 23px; height: 23px; }
+.topbar-social[data-social="instagram"]::before { width: 24px; height: 24px; }
+.topbar-actions .whatsapp-cta::before { width: 25px; height: 25px; }
 .topbar-actions .topbar-social::before,
 .topbar-actions .whatsapp-cta::before { position: relative; z-index: 1; }
 .btn-outline { color: #fff; background: rgba(13, 24, 61, .18); border-color: var(--gold); }
@@ -444,14 +444,14 @@ form .btn { grid-column: 1 / -1; width: 100%; }
     min-height: 42px;
     flex: 0 0 42px;
     border: 0;
-    box-shadow: 0 8px 18px var(--social-shadow, rgba(0,0,0,.18));
+    box-shadow: 0 4px 11px rgba(3, 12, 33, .45);
   }
   .topbar-actions .topbar-social[data-social="facebook"] { order: 1; border-radius: 50%; }
-  .topbar-actions .topbar-social[data-social="instagram"] { order: 2; border-radius: 12px; }
-  .topbar-actions .whatsapp-cta { order: 3; box-shadow: 0 8px 18px rgba(37, 211, 102, .24); }
+  .topbar-actions .topbar-social[data-social="instagram"] { order: 2; width: 39px; min-width: 39px; height: 39px; min-height: 39px; flex: 0 0 39px; border-radius: 11px; }
+  .topbar-actions .whatsapp-cta { order: 3; box-shadow: 0 4px 11px rgba(3, 12, 33, .45); }
   .topbar-social[data-social="instagram"]::after { display: none; }
   .topbar-social[data-social="facebook"]::before { width: 22px; height: 22px; }
-  .topbar-social[data-social="instagram"]::before { width: 24px; height: 24px; }
+  .topbar-social[data-social="instagram"]::before { width: 22px; height: 22px; }
   .topbar-actions .whatsapp-cta::before { width: 24px; height: 24px; }
   .topbar-actions .topbar-social:hover,
   .topbar-actions .whatsapp-cta:hover { transform: translateY(-1px); }
@@ -479,14 +479,14 @@ form .btn { grid-column: 1 / -1; width: 100%; }
     min-height: 42px;
     flex: 0 0 42px;
     border: 0;
-    box-shadow: 0 8px 18px var(--social-shadow, rgba(0,0,0,.18));
+    box-shadow: 0 4px 11px rgba(3, 12, 33, .45);
   }
   .topbar-actions .topbar-social[data-social="facebook"] { order: 1; border-radius: 50%; }
-  .topbar-actions .topbar-social[data-social="instagram"] { order: 2; border-radius: 12px; }
-  .topbar-actions .whatsapp-cta { order: 3; box-shadow: 0 8px 18px rgba(37, 211, 102, .24); }
+  .topbar-actions .topbar-social[data-social="instagram"] { order: 2; width: 39px; min-width: 39px; height: 39px; min-height: 39px; flex: 0 0 39px; border-radius: 11px; }
+  .topbar-actions .whatsapp-cta { order: 3; box-shadow: 0 4px 11px rgba(3, 12, 33, .45); }
   .topbar-social[data-social="instagram"]::after { display: none; }
   .topbar-social[data-social="facebook"]::before { width: 22px; height: 22px; }
-  .topbar-social[data-social="instagram"]::before { width: 24px; height: 24px; }
+  .topbar-social[data-social="instagram"]::before { width: 22px; height: 22px; }
   .topbar-actions .whatsapp-cta::before { width: 24px; height: 24px; }
   .topbar-actions .topbar-social:hover,
   .topbar-actions .whatsapp-cta:hover { transform: translateY(-1px); }
