@@ -1,9 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { ensureLocalSeoPages, LOCAL_SEO_PAGE_FILES } from "./local-seo-pages.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const dist = path.join(root, "dist");
+
+ensureLocalSeoPages();
 
 const htmlFiles = [
   "index.html",
@@ -15,6 +18,7 @@ const htmlFiles = [
   "mudanca-interestadual.html",
   "fretes-cargas.html",
   "embalagem-montagem.html",
+  ...LOCAL_SEO_PAGE_FILES,
 ];
 
 const cssFiles = [
