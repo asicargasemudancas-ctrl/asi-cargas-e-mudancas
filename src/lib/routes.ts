@@ -1,4 +1,13 @@
+import { SITE_URL } from "../data/site-content.ts";
+
 export type PublicRoute = `/${string}`;
+
+export const CANONICAL_HOST_REDIRECT = {
+  source: "/:path*",
+  has: [{ type: "host" as const, value: "www.asicargasemudancas.com.br" }],
+  destination: `${SITE_URL}/:path*`,
+  permanent: true as const,
+};
 
 const SERVICE_ROUTES = [
   "/mudanca-residencial",
@@ -48,6 +57,7 @@ const HTML_ROUTE_PAIRS = [...SERVICE_ROUTES, ...LOCAL_ROUTES].map((route) => ({
 }));
 
 export const LEGACY_REDIRECTS = [
+  { source: "/llm.txt", destination: "/llms.txt", permanent: true as const },
   { source: "/index.html", destination: "/", permanent: true as const },
   {
     source: "/orcamento.html",
@@ -67,6 +77,6 @@ const LEGACY_TARGETS = new Map(
   LEGACY_REDIRECTS.map(({ source, destination }) => [source, destination]),
 );
 
-export function resolveLegacyTarget(pathname: string): PublicRoute | undefined {
+export function resolveLegacyTarget(pathname: string): string | undefined {
   return LEGACY_TARGETS.get(pathname);
 }

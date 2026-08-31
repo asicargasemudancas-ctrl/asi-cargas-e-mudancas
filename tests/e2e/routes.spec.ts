@@ -29,3 +29,42 @@ test("ponte social responde e permanece fora do índice", async ({ request }) =>
   expect(html).toContain("noindex");
   expect(html).toContain("Ponte social ASI");
 });
+
+test("arquivos técnicos expõem GEO sem novas páginas", async ({ request }) => {
+  const robots = await request.get("/robots.txt");
+  const robotsText = await robots.text();
+  expect(robots.ok()).toBe(true);
+  expect(robotsText).toContain("OAI-SearchBot");
+  expect(robotsText).toContain("ChatGPT-User");
+
+  const sitemapText = await (await request.get("/sitemap.xml")).text();
+  expect((sitemapText.match(/<loc>/g) ?? []).length).toBe(25);
+  expect(sitemapText).not.toContain(".html</loc>");
+  expect(sitemapText).not.toContain("/redes</loc>");
+  expect(sitemapText).not.toContain("/llms.txt</loc>");
+
+  const llms = await request.get("/llms.txt");
+  expect(llms.ok()).toBe(true);
+  expect(llms.headers()["content-type"]).toContain("text/plain");
+  expect(await llms.text()).toContain("# ASI Cargas e Mudanças");
+
+  const singular = await request.get("/llm.txt", { maxRedirects: 0 });
+  expect(singular.status()).toBe(308);
+  expect(singular.headers().location).toBe("/llms.txt");
+
+  const verification = await request.get("/google73d03fb6322c1931.html");
+  expect((await verification.text()).trim()).toBe(
+    "google-site-verification: google73d03fb6322c1931.html",
+  );
+});
+
+test("www redireciona permanentemente para o apex", async ({ request }) => {
+  const response = await request.get("/mudanca-residencial?origem=teste", {
+    headers: { host: "www.asicargasemudancas.com.br" },
+    maxRedirects: 0,
+  });
+  expect(response.status()).toBe(308);
+  expect(response.headers().location).toBe(
+    "https://asicargasemudancas.com.br/mudanca-residencial?origem=teste",
+  );
+});

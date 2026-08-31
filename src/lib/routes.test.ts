@@ -2,11 +2,36 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  CANONICAL_HOST_REDIRECT,
   INDEXABLE_ROUTES,
   LEGACY_REDIRECTS,
   PUBLIC_ROUTES,
   resolveLegacyTarget,
 } from "./routes.ts";
+
+test("redireciona llm singular para o documento canônico", () => {
+  assert.equal(resolveLegacyTarget("/llm.txt"), "/llms.txt");
+});
+
+test("redireciona www para o host apex", () => {
+  assert.equal(CANONICAL_HOST_REDIRECT.source, "/:path*");
+  assert.equal(
+    CANONICAL_HOST_REDIRECT.destination,
+    "https://asicargasemudancas.com.br/:path*",
+  );
+  assert.deepEqual(CANONICAL_HOST_REDIRECT.has, [
+    { type: "host", value: "www.asicargasemudancas.com.br" },
+  ]);
+  assert.equal(CANONICAL_HOST_REDIRECT.permanent, true);
+});
+
+test("mantém exatamente 25 rotas indexáveis", () => {
+  assert.equal(INDEXABLE_ROUTES.length, 25);
+  assert.equal(
+    (INDEXABLE_ROUTES as readonly string[]).includes("/redes"),
+    false,
+  );
+});
 
 test("mantém 25 rotas indexáveis limpas e uma ponte social", () => {
   assert.equal(INDEXABLE_ROUTES.length, 25);
