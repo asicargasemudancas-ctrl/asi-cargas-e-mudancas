@@ -6,6 +6,7 @@ import {
 } from "./src/lib/routes";
 
 const nextConfig: NextConfig = {
+  agentRules: false,
   allowedDevOrigins: ["127.0.0.1"],
   async redirects() {
     return [
