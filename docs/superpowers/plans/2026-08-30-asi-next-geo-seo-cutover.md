@@ -22,6 +22,7 @@
 - `llms.txt` é complementar e experimental; não descrevê-lo como protocolo oficial ou garantia de ranking.
 - O host canônico permanece `https://asicargasemudancas.com.br`.
 - Nenhum merge em `main` ocorre antes de testes locais e preview aprovados.
+- Emenda de segurança aprovada em 2026-08-30: atualizar somente `next` e `eslint-config-next` de `16.2.3` para `16.3.3`, mantendo as demais dependências diretas fixas, e bloquear preview/produção enquanto `npm audit --omit=dev` reportar qualquer high ou critical.
 - Não usar `git add -A`; staging sempre explícito.
 - Não apagar branch, worktree ou deployment anterior durante a entrega.
 - Se o Search Console exigir login ou acesso DNS indisponível, pausar somente a etapa externa e separar o estado publicado do estado configurado no console.
@@ -750,6 +751,136 @@ git log --oneline --decorate origin/main..HEAD
 ```
 
 Expected: documentation plus three scoped implementation commits.
+
+---
+
+### Task 8: Remediar vulnerabilidades de runtime antes do preview
+
+**Files:**
+- Modify: `package.json`.
+- Modify: `package-lock.json`.
+- Verify: toda a árvore versionada e os endpoints locais de produção.
+
+**Interfaces:**
+- Consumes: SHA funcional candidato `a33c3c55cbdfea1d5b1d31838a4c16b2aca48f2e`, a emenda de plano aprovada e o RED de segurança confirmado pela Task 4.
+- Produces: commit isolado com Next.js corrigido, audit de produção sem high/critical e novo SHA candidato validado integralmente.
+
+- [ ] **Step 1: Confirmar escopo, BASE e RED de segurança**
+
+Run:
+
+```powershell
+git rev-parse --show-toplevel
+git branch --show-current
+git rev-parse HEAD
+git status --short --branch
+node --version
+
+npm audit --omit=dev --json
+```
+
+Expected before the update:
+
+- worktree isolado e branch `feat/next-geo-seo-cutover`;
+- HEAD contém `a33c3c55cbdfea1d5b1d31838a4c16b2aca48f2e` como ancestral e somente a emenda documental aprovada depois dele;
+- árvore limpa;
+- Node `v24.14.1`;
+- audit exits non-zero and reports three high findings rooted in `next@16.2.3`, including transitive `postcss` and `sharp`.
+
+This is the required RED evidence. Do not add an artificial unit test for dependency metadata.
+
+- [ ] **Step 2: Atualizar somente as versões diretas autorizadas**
+
+Use `apply_patch` in `package.json`:
+
+```diff
+-    "next": "16.2.3",
++    "next": "16.3.3",
+@@
+-    "eslint-config-next": "16.2.3",
++    "eslint-config-next": "16.3.3",
+```
+
+Do not change React, React DOM, Tailwind, TypeScript, Framer Motion, Lucide, Playwright or any other direct dependency.
+
+Regenerate only the lock contract with the npm version that passed on this Windows worktree:
+
+```powershell
+npx --yes npm@10.9.4 install --package-lock-only --ignore-scripts
+```
+
+Expected: `package.json` and `package-lock.json` are the only versioned changes.
+
+- [ ] **Step 3: Instalar limpo e provar o GREEN de segurança**
+
+Run:
+
+```powershell
+npx --yes npm@10.9.4 ci
+npm ls next eslint-config-next postcss sharp --depth=2
+npm audit --omit=dev --json
+```
+
+Expected:
+
+- installed `next@16.3.3` and `eslint-config-next@16.3.3`;
+- no invalid or extraneous dependency;
+- audit contains zero critical and zero high vulnerabilities;
+- no automatic `npm audit fix` and no SemVer-major drift.
+
+- [ ] **Step 4: Repetir o quality gate integral**
+
+Run:
+
+```powershell
+npm run quality
+```
+
+Expected: zero failures in unit, lint, typecheck, build, E2E and visual tests. Existing legacy lint warnings must be reported separately and cannot hide a new warning.
+
+- [ ] **Step 5: Revalidar endpoints do build e visual crítico**
+
+Start production mode on port 3200 and validate:
+
+```powershell
+npm run start -- -p 3200
+```
+
+Check HTTP 200 and content types for:
+
+- `/`;
+- `/robots.txt`;
+- `/sitemap.xml`;
+- `/llms.txt`;
+- `/google73d03fb6322c1931.html`.
+
+Inspect at `1440×900` and `390×844`:
+
+- heavy-item selector;
+- reviews carousel;
+- services density;
+- real footer map;
+- no horizontal overflow, console error or `pageerror`.
+
+Terminate the server. Preserve screenshots in the ignored SDD workspace and leave the worktree free of generated outputs.
+
+- [ ] **Step 6: Auditar o diff e criar o commit isolado**
+
+Run:
+
+```powershell
+git status --short
+git diff -- package.json package-lock.json
+git diff --check
+git add -- package.json package-lock.json
+git diff --cached --check
+git commit -m "fix: update Next.js to security-patched release"
+git status --short --branch
+```
+
+Expected: one scoped commit, clean worktree and no changed source, test, asset, analytics, route or content file.
+
+Rollback before push: if audit, quality, endpoint or visual validation fails, do not commit the broken candidate; preserve the report and stop preview/production.
 
 ---
 
