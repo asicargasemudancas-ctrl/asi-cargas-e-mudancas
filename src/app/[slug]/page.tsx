@@ -6,8 +6,9 @@ import { QuotePageView } from "@/components/quote-page-view";
 import { ServicePageView } from "@/components/service-page";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { movingCompanyProvider } from "@/data/business";
 import { findLocalPage, localPages } from "@/data/local-pages";
-import { findServicePage, movingCompanyProvider, servicePages } from "@/data/services";
+import { findServicePage, servicePages } from "@/data/services";
 
 type PageProps = { params: Promise<{ slug: string }> };
 

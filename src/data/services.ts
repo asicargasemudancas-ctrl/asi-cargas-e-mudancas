@@ -1,6 +1,5 @@
 import {
   BUSINESS_NAME,
-  INTERNATIONAL_DISPLAY_PHONE,
   SITE_URL,
   type PageContent,
 } from "./site-content.ts";
@@ -133,14 +132,6 @@ export const servicePages = [
     ],
   }),
 ] as const satisfies readonly ServicePage[];
-
-export const movingCompanyProvider = {
-  "@type": "MovingCompany",
-  name: BUSINESS_NAME,
-  alternateName: "ASI Cargas e Mudanças",
-  telephone: INTERNATIONAL_DISPLAY_PHONE,
-  url: SITE_URL,
-} as const;
 
 export function findServicePage(slug: string): ServicePage | undefined {
   return servicePages.find((page) => page.slug === slug);

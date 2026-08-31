@@ -68,3 +68,16 @@ test("www redireciona permanentemente para o apex", async ({ request }) => {
     "https://asicargasemudancas.com.br/mudanca-residencial?origem=teste",
   );
 });
+
+test("home expõe metadata social e MovingCompany verificável", async ({ request }) => {
+  const response = await request.get("/");
+  expect(response.ok()).toBe(true);
+  const html = await response.text();
+
+  expect(html).toContain('name="twitter:card" content="summary_large_image"');
+  expect(html).toContain('"@type":"MovingCompany"');
+  expect(html).toContain('"hasMap":"https://www.google.com/maps/search/');
+  expect(html).toContain('"opens":"06:00"');
+  expect(html).not.toContain('"aggregateRating"');
+  expect(html).not.toContain('"streetAddress"');
+});

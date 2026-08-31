@@ -16,6 +16,7 @@ import {
 import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { movingCompanyJsonLd } from "@/data/business";
 
 export const metadata: Metadata = {
   title: "Mudanças para todo o Brasil | ASI Alexandre Soluções Integradas",
@@ -28,20 +29,6 @@ export const metadata: Metadata = {
     type: "website",
     images: [{ url: "/assets/asi-hero-conversion-truck-1600x900.webp", width: 1600, height: 900, alt: "Caminhão ASI em operação de mudança" }],
   },
-};
-
-const movingCompanyJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "MovingCompany",
-  name: "Alexandre Soluções Integradas",
-  alternateName: "ASI Cargas e Mudanças",
-  telephone: "+55 87 98170-3225",
-  url: "https://asicargasemudancas.com.br/",
-  sameAs: ["https://www.instagram.com/asi_cargas_e_mudancas/", "https://www.linkedin.com/in/jos%C3%A9-alexandre-rodrigues-a005bb132/"],
-  priceRange: "Sob orçamento",
-  areaServed: ["Brasil", "Petrolina", "Juazeiro", "Vale do São Francisco"],
-  founder: { "@type": "Person", name: "José Alexandre Rodrigues", jobTitle: "Diretor da ASI - Alexandre Soluções Integradas" },
-  makesOffer: ["Mudança residencial", "Fretes e cargas", "Mudança comercial"].map((name) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name } })),
 };
 
 export default function HomePage() {
