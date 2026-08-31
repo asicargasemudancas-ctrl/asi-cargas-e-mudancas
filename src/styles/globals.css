@@ -1,0 +1,290 @@
+@import "tailwindcss" source(none);
+@source "../app";
+@source "../components";
+
+@theme inline {
+  --font-sans: var(--font-asi-sans);
+  --font-serif: var(--font-asi-sans);
+  --font-mono: var(--font-asi-mono);
+}
+
+@theme {
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.5rem;
+}
+
+:root {
+  --asi-navy: #0a1230;
+  --asi-surface: #0d183d;
+  --asi-royal: #0e2f6d;
+  --asi-gold: #ffc107;
+  --asi-gold-highlight: #ffd64a;
+  --asi-whatsapp: #25d366;
+  --asi-paper: #f7f8fb;
+  --asi-ink: #0b1536;
+  --asi-muted: #5e687b;
+  --asi-line: #dfe3eb;
+  --asi-radius-sm: 0.5rem;
+  --asi-radius-md: 0.875rem;
+  --asi-container: 75rem;
+  --asi-glass-line: rgb(255 255 255 / 16%);
+  --asi-glass-highlight: rgb(255 255 255 / 9%);
+  --asi-glass-shadow: 0 24px 72px rgb(1 7 24 / 28%);
+  --asi-motion-fast: 180ms;
+  --asi-motion-base: 360ms;
+  --asi-motion-slow: 700ms;
+  --asi-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--asi-ink);
+  background: var(--asi-paper);
+  font-family: var(--font-asi-sans), "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: clip;
+  text-rendering: optimizeLegibility;
+  font-synthesis: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-block: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+.type-hero {
+  font-size: clamp(2.85rem, 5.85vw, 5.5rem);
+  font-weight: 750;
+  line-height: 0.96;
+  letter-spacing: -0.052em;
+}
+
+.type-display {
+  font-size: clamp(2.25rem, 3.9vw, 3.5rem);
+  font-weight: 720;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.type-display-sm {
+  font-size: clamp(2rem, 3.2vw, 2.875rem);
+  font-weight: 720;
+  line-height: 1.04;
+  letter-spacing: -0.038em;
+}
+
+.glass-header,
+.glass-panel,
+.glass-pill,
+.glass-control {
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  backdrop-filter: blur(18px) saturate(120%);
+}
+
+.glass-header {
+  border-bottom: 1px solid rgb(255 255 255 / 12%);
+  background: linear-gradient(180deg, rgb(7 20 47 / 88%), rgb(7 20 47 / 74%));
+  box-shadow: inset 0 -1px 0 rgb(255 255 255 / 3%);
+}
+
+.glass-panel {
+  border: 1px solid var(--asi-glass-line);
+  background: linear-gradient(135deg, rgb(8 20 47 / 86%), rgb(13 24 61 / 72%));
+  box-shadow: inset 0 1px 0 var(--asi-glass-highlight), var(--asi-glass-shadow);
+}
+
+.glass-pill {
+  border: 1px solid rgb(255 193 7 / 48%);
+  background: linear-gradient(135deg, rgb(7 20 47 / 68%), rgb(14 47 109 / 38%));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%), 0 12px 32px rgb(1 7 24 / 18%);
+}
+
+.glass-control {
+  border: 1px solid rgb(255 255 255 / 28%);
+  background: rgb(255 255 255 / 8%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%);
+}
+
+.fluid-card {
+  transition:
+    transform var(--asi-motion-base) var(--asi-motion-ease),
+    box-shadow var(--asi-motion-base) var(--asi-motion-ease),
+    border-color var(--asi-motion-fast) ease,
+    background-color var(--asi-motion-fast) ease;
+}
+
+.fluid-media {
+  transition: transform 850ms var(--asi-motion-ease);
+}
+
+.fluid-action svg {
+  transition: transform var(--asi-motion-base) var(--asi-motion-ease);
+}
+
+.fluid-press {
+  transition:
+    transform var(--asi-motion-fast) var(--asi-motion-ease),
+    background-color var(--asi-motion-fast) ease,
+    border-color var(--asi-motion-fast) ease,
+    color var(--asi-motion-fast) ease,
+    box-shadow var(--asi-motion-fast) ease;
+}
+
+.reviews-carousel {
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+}
+
+.reviews-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fluid-card:hover {
+    z-index: 1;
+    transform: translateY(-6px);
+    border-color: rgb(14 47 109 / 25%);
+    box-shadow: 0 24px 60px rgb(10 18 48 / 14%);
+  }
+
+  .fluid-card:hover .fluid-media {
+    transform: scale(1.045);
+  }
+
+  .fluid-action:hover svg {
+    transform: translateX(4px);
+  }
+
+  .fluid-press:hover {
+    transform: translateY(-2px);
+  }
+
+  .fluid-press:active {
+    transform: translateY(0) scale(0.98);
+  }
+}
+
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  .fluid-details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      block-size 420ms var(--asi-motion-ease),
+      opacity 280ms ease;
+  }
+
+  .fluid-details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+summary,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+input,
+select,
+textarea {
+  font-size: 1rem;
+}
+
+::selection {
+  color: var(--asi-navy);
+  background: var(--asi-gold);
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--asi-gold) 72%, white);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .fluid-card:hover,
+  .fluid-card:hover .fluid-media,
+  .fluid-action:hover svg,
+  .fluid-press:hover,
+  .fluid-press:active {
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-header,
+  .glass-panel,
+  .glass-pill,
+  .glass-control {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .glass-header,
+  .glass-panel {
+    background: #07142f;
+  }
+
+  .glass-pill,
+  .glass-control {
+    background: #132242;
+  }
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .glass-header,
+  .glass-panel {
+    background: rgb(7 20 47 / 97%);
+  }
+
+  .glass-pill,
+  .glass-control {
+    background: rgb(19 34 66 / 96%);
+  }
+}

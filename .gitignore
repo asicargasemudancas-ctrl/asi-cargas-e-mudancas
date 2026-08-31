@@ -42,3 +42,20 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.log
+
+# Next.js / TypeScript / Playwright
+/.next/
+/out/
+/coverage/
+/playwright-report/
+/test-results/
+/.artifacts/
+/outputs/screenshots/diff/
+/outputs/screenshots/actual/
+.env*
+!.env.example
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+.next-dev.log
+.next-dev.err.log

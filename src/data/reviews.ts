@@ -1,0 +1,23 @@
+export type Review = {
+  readonly name: string;
+  readonly initials: string;
+  readonly color: "r" | "b" | "y" | "g";
+  readonly rating: 5;
+  readonly when: string;
+  readonly type: "residencial" | "comercial";
+  readonly tag: string;
+  readonly text: string;
+};
+
+export const reviews = [
+  { name: "Lara Ramos lalinha", initials: "L", color: "r", rating: 5, when: "2 meses atrás", type: "residencial", tag: "RECENTE · CUIDADO COM MÓVEIS", text: "Ótimo atendimento, cuidadoso com todos os móveis! Recomendo" },
+  { name: "RB Clothing", initials: "R", color: "b", rating: 5, when: "3 meses atrás", type: "comercial", tag: "COMERCIAL · TUDO CERTINHO", text: "Alexandre está de parabéns! Fez todo o combinado na nossa mudança, a todo momento envolvido no processo, informando e explicando tudo. Chegou tudo certinho! Recomendamos demais!" },
+  { name: "Adeisa Guimarães Carvalho", initials: "A", color: "y", rating: 5, when: "Editado 3 meses atrás", type: "residencial", tag: "RESIDENCIAL · TERCEIRA MUDANÇA COM ASI", text: "A equipe liderada por Alexandre é de um profisionalismo enorme. Cuidaram muito bem de meus móveis, aqueles mais delicados receberam atenção redobrada, com envelopamento para evitar danos. Já estamos na nossa terceira mudança com Alexandre e recomendamos enormemente seu serviço." },
+  { name: "Aline Aquino", initials: "A", color: "g", rating: 5, when: "3 meses atrás", type: "residencial", tag: "RESIDENCIAL · PREÇO JUSTO E AGILIDADE", text: "Excelente trabalho! Cuidado com os móveis e demais pertences, preço justo e agilidade! Recomendo a empresa!" },
+  { name: "Pierri Emanoel de Abreu Oliveira", initials: "P", color: "b", rating: 5, when: "6 meses atrás", type: "residencial", tag: "RESIDENCIAL · SEM PREJUÍZO NOS MÓVEIS", text: "Fiz a mudança com o Alexandre, e desde o primeiro contato ele foi extremamente atencioso, respondeu todas as dúvidas, pontual e cuidadoso com todo o processo da mudança, além de ter sido flexível com as necessidades que apresentei. Além de tudo isso, a mudança chegou toda certinha, sem prejuízo nos móveis. Recomendo a todos: podem fechar negócio de olhos fechados." },
+  { name: "GSHOP - Cosméticos Veganos", initials: "G", color: "r", rating: 5, when: "7 meses atrás", type: "comercial", tag: "COMERCIAL · NOTA MIL", text: "Seu Alexandre super pontual, solicito, educado e profissional. Nota MIL!" },
+  { name: "Mel Dias", initials: "M", color: "y", rating: 5, when: "7 meses atrás", type: "residencial", tag: "RESIDENCIAL · TRABALHO HUMANIZADO", text: "Ele é pontual, atencioso com tudo desde o início. Faz um ótimo trabalho e humanizado... Gostei demais e recomendo!" },
+  { name: "Adrianne Garcia", initials: "A", color: "g", rating: 5, when: "9 meses atrás", type: "residencial", tag: "RESIDENCIAL · COMUNICAÇÃO E CONFIANÇA", text: "Mudança super tranquila. Equipe cuidadosa, ágil e confiável. Alexandre tem uma boa comunicação com o cliente durante todo o processo e é super prestativo. Super indico!" },
+  { name: "Marcelo Giacomini", initials: "M", color: "b", rating: 5, when: "um ano atrás", type: "residencial", tag: "RESIDENCIAL · TRANQUILIDADE E SEGURANÇA", text: "Desde o momento da consulta sobre valores e destino, o Sr. Alexandre foi super prestativo e atencioso. Pontualíssimo no horário acertado, fez minha mudança com muito zelo. É o tipo de profissional raro de se encontrar hoje em dia, que tenta dar toda a tranquilidade e segurança ao cliente. Eu fico muito tranquilo em uma próxima oportunidade contratar novamente seus serviços." },
+  { name: "Caio Peixoto", initials: "C", color: "r", rating: 5, when: "um ano atrás", type: "comercial", tag: "COMERCIAL · EFICIÊNCIA E CUIDADO", text: "Gostaria de destacar o excelente serviço de frete, o entusiasmo e o profissionalismo da equipe durante a minha mudança para um edifício. Além de serem extremamente cuidadosos com cada móvel, demonstraram um grande compromisso com a qualidade, realizando o trabalho com rapidez sem abrir mão do cuidado necessário. A dedicação e energia de todos garantiram uma mudança tranquila, organizada e sem contratempos. Fiquei impressionado com a eficiência e a atenção aos detalhes. Recomendo o serviço de olhos fechados!" },
+] as const satisfies readonly Review[];
