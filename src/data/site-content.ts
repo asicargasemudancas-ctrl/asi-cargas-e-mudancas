@@ -23,9 +23,8 @@ export const homeContent = {
   description:
     "Mudanças, fretes e cargas com atendimento direto, rota combinada e orçamento pelo WhatsApp da ASI Cargas e Mudanças.",
   canonical: SITE_URL,
-  eyebrow:
-    "01 · atendimento Brasil · rota combinada · volume avaliado · dono presente",
-  headline: "Mudança para todo o Brasil. Sem surpresa.",
+  eyebrow: "Petrolina · Nordeste · Brasília · São Paulo",
+  headline: "Mudanças do Vale para todo o Brasil.",
   lead:
-    "Informe origem, destino no Brasil e os itens pesados da casa. O Sr. Alexandre recebe o pedido com contexto para estimar rota, acesso, embalagem e agenda.",
+    "Chame no WhatsApp, mande fotos e conte para onde vai. O Sr. Alexandre conversa com você e monta o orçamento: com ou sem embalagem, carga exclusiva ou compartilhada.",
 } as const;

@@ -23,11 +23,12 @@ test("home preserva hierarquia, reputação, sociais e formulário", async ({ pa
 
   await expect(page.getByRole("heading", {
     level: 1,
-    name: "Mudança para todo o Brasil. Sem surpresa.",
+    name: "Mudanças do Vale para todo o Brasil.",
   })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Pedir orçamento pelo WhatsApp" })).toBeVisible();
-  await expect(page.getByText("131 avaliações públicas")).toBeVisible();
-  await expect(page.getByText("04 — Operação")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Pedir orçamento pelo WhatsApp" }).first()).toBeVisible();
+  await expect(page.getByTestId("header-whatsapp-cta")).toBeVisible();
+  await expect(page.getByText("137 avaliações públicas")).toBeVisible();
+  await expect(page.getByText("01 — Equipe em campo")).toBeVisible();
 
   const socialButtons = page.locator("[data-testid^='social-']");
   await expect(socialButtons).toHaveCount(3);
@@ -40,8 +41,105 @@ test("home preserva hierarquia, reputação, sociais e formulário", async ({ pa
 
   const form = page.getByTestId("home-quote-form");
   await expect(form).toBeVisible();
-  await expect(form.locator("fieldset")).toHaveCount(2);
-  await expect(form.locator("input[type='checkbox']")).toHaveCount(13);
+  await expect(form.locator("input[type='checkbox']")).toHaveCount(0);
+  await expect(form.locator("[name]")).toHaveCount(5);
+});
+
+test("orçamento simplificado: sem itens pesados, sem botão separado de fotos e caixas identificadas", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.getByText(/itens pesados/i)).toHaveCount(0);
+  await expect(page.getByText(/etiquetad/i)).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /mandar fotos/i })).toHaveCount(0);
+  await expect(page.getByText(/frota identificada/i)).toHaveCount(0);
+  await expect(page.getByText(/caixas identificadas/i).first()).toBeAttached();
+});
+
+test("pedido rápido abre o WhatsApp com a rota informada", async ({ page }) => {
+  await page.addInitScript(() => {
+    window.open = ((url?: string | URL) => {
+      (window as unknown as { __opened: string }).__opened = String(url ?? "");
+      return null;
+    }) as typeof window.open;
+  });
+  await page.goto("/");
+
+  const form = page.getByRole("form", { name: "Pedido rápido de mudança" });
+  await form.getByLabel("Origem").fill("Petrolina");
+  await form.getByLabel("Destino").fill("São Paulo");
+  await form.getByRole("button", { name: /Continuar no WhatsApp/ }).click();
+
+  const opened = await page.evaluate(() => (window as unknown as { __opened: string }).__opened);
+  expect(opened).toContain("https://wa.me/5587981703225");
+  expect(new URL(opened).searchParams.get("text")).toContain("Rota: Petrolina para São Paulo");
+});
+
+test("mapa de rotas em Three.js renderiza com destaque para São Paulo e Brasília", async ({ page }) => {
+  await page.goto("/");
+
+  const map = page.getByTestId("route-map-3d");
+  await map.scrollIntoViewIfNeeded();
+  // No dev, o primeiro acesso compila o chunk do three sob demanda.
+  await expect(map).toHaveAttribute("data-ready", "true", { timeout: 30_000 });
+  await expect(map.locator("canvas")).toHaveCount(1);
+  const priority = map.locator(".route-label--priority");
+  await expect(priority).toHaveCount(2);
+  await expect(priority.filter({ hasText: "São Paulo" })).toHaveCSS("opacity", "1", { timeout: 12_000 });
+  await expect(priority.filter({ hasText: "Brasília" })).toHaveCSS("opacity", "1");
+  await expect(page.locator("#rotas").getByRole("heading", { level: 2 })).toContainText("Brasília e São Paulo");
+});
+
+test("mapa calcula a distância entre duas cidades com dois cliques", async ({ page }) => {
+  await page.goto("/");
+
+  const map = page.getByTestId("route-map-3d");
+  await map.scrollIntoViewIfNeeded();
+  await expect(map).toHaveAttribute("data-ready", "true", { timeout: 30_000 });
+  const panel = page.getByTestId("route-distance-panel");
+  await expect(panel).toContainText("Toque em duas cidades");
+
+  await page.getByTestId("map-city-petrolina").click();
+  await expect(panel).toContainText("Origem: Petrolina");
+  await page.getByTestId("map-city-sao-paulo").click();
+  await expect(page.getByTestId("route-distance-km")).toHaveText(/≈ \d\.\d{3} km/);
+  await expect(panel).toContainText("dias de viagem");
+  await expect(panel.getByRole("link", { name: "Cotar esta rota" })).toHaveAttribute("href", /wa\.me/);
+
+  await panel.getByRole("button", { name: /Nova consulta/ }).click();
+  await panel.getByRole("button", { name: "Petrolina → Brasília" }).click();
+  await expect(panel).toContainText("Brasília");
+  await expect(page.getByTestId("route-distance-km")).toContainText("km");
+});
+
+test("vídeos reais tocam sozinhos, sem som, quando a seção aparece", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#operacao").scrollIntoViewIfNeeded();
+
+  const video = page.locator("#operacao [data-testid='loop-video']").first();
+  await expect(video).toHaveJSProperty("muted", true);
+  await expect.poll(() => video.evaluate((element: HTMLVideoElement) => !element.paused), { timeout: 10_000 }).toBe(true);
+  await expect(page.locator("#operacao [data-testid='loop-video']")).toHaveCount(8);
+});
+
+test("mapa de rotas mostra o estado final direto quando o usuário reduz movimento", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+
+  const map = page.getByTestId("route-map-3d");
+  await map.scrollIntoViewIfNeeded();
+  await expect(map).toHaveAttribute("data-ready", "true", { timeout: 15_000 });
+  await expect(map.locator(".route-label").filter({ hasText: "Recife" })).toHaveCSS("opacity", "1", { timeout: 3_000 });
+});
+
+test("mobile mostra CTA fixo do WhatsApp só depois do hero", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const sticky = page.getByTestId("sticky-whatsapp");
+  await expect(sticky).toHaveAttribute("data-visible", "false");
+  await page.evaluate(() => window.scrollTo(0, 1600));
+  await expect(sticky).toHaveAttribute("data-visible", "true");
+  await expect(sticky).toHaveAttribute("href", /wa\.me\/5587981703225/);
 });
 
 test("avaliações permanecem em carrossel contínuo e desaceleram no hover", async ({ page }) => {
@@ -75,7 +173,7 @@ test("carrossel permite navegação manual quando movimento reduzido está ativo
   const carousel = page.getByTestId("reviews-carousel");
   const track = page.getByTestId("reviews-carousel-track");
   await expect(carousel).toBeVisible();
-  expect(await carousel.getByRole("article").count()).toBe(10);
+  expect(await carousel.getByRole("article").count()).toBe(12);
   expect(await carousel.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
 
   await page.waitForTimeout(250);
@@ -166,7 +264,7 @@ test("home aplica tipografia fluida, vidro funcional e cores oficiais das redes"
   const hero = page.locator("#top");
   const heading = hero.getByRole("heading", {
     level: 1,
-    name: "Mudança para todo o Brasil. Sem surpresa.",
+    name: "Mudanças do Vale para todo o Brasil.",
   });
   const desktopHeadingSize = await heading.evaluate(
     (element) => Number.parseFloat(getComputedStyle(element).fontSize),
@@ -174,7 +272,7 @@ test("home aplica tipografia fluida, vidro funcional e cores oficiais das redes"
   expect(desktopHeadingSize).toBeGreaterThanOrEqual(72);
   expect(desktopHeadingSize).toBeLessThanOrEqual(88);
 
-  const kicker = hero.getByText(/atendimento brasil/i);
+  const kicker = hero.locator(".hero-kicker");
   const kickerStyles = await kicker.evaluate((element) => {
     const style = getComputedStyle(element);
     return { family: style.fontFamily, size: Number.parseFloat(style.fontSize) };
@@ -182,10 +280,15 @@ test("home aplica tipografia fluida, vidro funcional e cores oficiais das redes"
   expect(kickerStyles.family).toMatch(/IBM.*Plex.*Mono/i);
   expect(kickerStyles.size).toBeGreaterThanOrEqual(12);
 
-  const quickQuoteBackdrop = await page
+  const quickQuote = await page
     .getByRole("form", { name: "Pedido rápido de mudança" })
-    .evaluate((element) => getComputedStyle(element).backdropFilter);
-  expect(quickQuoteBackdrop).toContain("blur(");
+    .evaluate((element) => ({
+      backdrop: getComputedStyle(element).backdropFilter,
+      reducedTransparency: matchMedia("(prefers-reduced-transparency: reduce)").matches,
+    }));
+  // Com transparência reduzida no sistema, o vidro vira fundo sólido de propósito.
+  if (quickQuote.reducedTransparency) expect(quickQuote.backdrop).toBe("none");
+  else expect(quickQuote.backdrop).toContain("blur(");
 
   const instagram = await page.getByTestId("social-instagram").evaluate((element) => {
     const style = getComputedStyle(element);
@@ -215,48 +318,6 @@ test("home aplica tipografia fluida, vidro funcional e cores oficiais das redes"
   );
   expect(mobileHeadingSize).toBeGreaterThanOrEqual(44);
   expect(mobileHeadingSize).toBeLessThanOrEqual(48);
-});
-
-test("seletor de itens pesados abre acima no desktop, seleciona e fecha por Escape", async ({ page }) => {
-  await page.goto("/");
-
-  const trigger = page.getByTestId("heavy-items-trigger");
-  await trigger.click();
-  const menu = page.getByTestId("heavy-items-menu");
-  await expect(menu).toBeVisible();
-
-  const triggerBox = await trigger.boundingBox();
-  const menuBox = await menu.boundingBox();
-  const menuBottom = (menuBox?.y ?? Number.POSITIVE_INFINITY) + (menuBox?.height ?? 0);
-  expect(menuBottom).toBeLessThanOrEqual(triggerBox?.y ?? 0);
-
-  await menu.getByLabel("Geladeira").check();
-  await expect(trigger).toContainText("Geladeira");
-
-  await page.keyboard.press("Escape");
-  await expect(menu).toBeHidden();
-  await expect(trigger).toHaveAttribute("aria-expanded", "false");
-});
-
-test("seletor de itens pesados expande o hero no mobile sem ser recortado", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
-
-  const hero = page.locator("#top");
-  const heightBefore = (await hero.boundingBox())?.height ?? 0;
-  const trigger = page.getByTestId("heavy-items-trigger");
-  await trigger.click();
-  const menu = page.getByTestId("heavy-items-menu");
-  await expect(menu).toBeVisible();
-
-  const triggerBox = await trigger.boundingBox();
-  const menuBox = await menu.boundingBox();
-  const heroBox = await hero.boundingBox();
-  const menuBottom = (menuBox?.y ?? Number.POSITIVE_INFINITY) + (menuBox?.height ?? 0);
-  const heroBottom = (heroBox?.y ?? 0) + (heroBox?.height ?? 0);
-  expect(menuBox?.y ?? 0).toBeGreaterThanOrEqual((triggerBox?.y ?? 0) + (triggerBox?.height ?? 0));
-  expect(menuBottom).toBeLessThanOrEqual(heroBottom);
-  expect(heroBox?.height ?? 0).toBeGreaterThan(heightBefore + 100);
 });
 
 test("hero reage ao scroll e desativa o parallax quando o usuário reduz movimento", async ({ page }) => {

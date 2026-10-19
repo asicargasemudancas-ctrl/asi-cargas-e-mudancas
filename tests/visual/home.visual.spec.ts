@@ -35,7 +35,7 @@ for (const viewport of [{ name: "1440", width: 1440, height: 900 }, { name: "390
     await page.goto("/", { waitUntil: "networkidle" });
     await stabilize(page);
 
-    await expect(page.getByRole("heading", { level: 1, name: "Mudança para todo o Brasil. Sem surpresa." })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Mudanças do Vale para todo o Brasil." })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
     expect(consoleErrors).toEqual([]);
     await page.screenshot({ path: path.join(output, `home-${viewport.name}.png`), fullPage: true });

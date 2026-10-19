@@ -47,16 +47,16 @@ export const servicePages = [
     description:
       "Mudança comercial para escritórios, lojas, salas e pequenas empresas com planejamento de rota, volume e janela de atendimento.",
     eyebrow: "R2 · mudança comercial",
-    headline: "Loja, escritório, sala — mudança sem perder o dia.",
-    lead: "Janela combinada, caixas identificadas e transporte planejado.",
+    headline: "Loja, clínica, escritório — mudança sem perder o dia.",
+    lead: "Clínicas, lojas, escritórios, estúdios e academias com janela combinada, equipamentos protegidos e caixas identificadas.",
     image: "/assets/context-pack-asi/03-bau-aberto-organizado-optimized.jpg",
     imageAlt:
-      "Baú carregado com caixas etiquetadas ASI para mudança comercial",
+      "Baú carregado com caixas identificadas e móveis protegidos para mudança comercial",
     serviceType: "Mudança comercial",
     areaServed: ["Petrolina", "Juazeiro"],
     cardDetails: [
-      "Escritórios, lojas e salas comerciais.",
-      "Janela de atendimento e caixas identificadas.",
+      "Clínicas, lojas, escritórios, estúdios e academias.",
+      "Equipamentos protegidos e janela de atendimento combinada.",
     ],
   }),
   service({
@@ -64,17 +64,17 @@ export const servicePages = [
     legacyFile: "mudanca-interestadual.html",
     title: `Mudança interestadual saindo de Petrolina | ${BUSINESS_NAME}`,
     description:
-      "Mudanças interestaduais saindo de Petrolina e Juazeiro para Recife, Salvador, Fortaleza e outras rotas sob agenda.",
+      "Mudanças interestaduais saindo de Petrolina e Juazeiro para o Nordeste, Brasília, São Paulo e outras rotas sob agenda.",
     eyebrow: "R3 · interestadual",
     headline: "De Petrolina pra onde você precisar.",
-    lead: "Recife · Salvador · Fortaleza · rotas sob agenda confirmada.",
+    lead: "Nordeste · Brasília · São Paulo · rotas sob agenda confirmada.",
     image: "/assets/asi-routes-map-premium-1600x900.webp",
     imageAlt: "Mapa visual de rotas interestaduais atendidas pela ASI",
     serviceType: "Mudança interestadual",
-    areaServed: ["Petrolina", "Juazeiro", "Recife", "Salvador", "Fortaleza"],
+    areaServed: ["Petrolina", "Juazeiro", "Recife", "Salvador", "Fortaleza", "Brasília", "São Paulo"],
     cardDetails: [
       "Rota, volume e data confirmados antes do agendamento.",
-      "Destinos em PE, BA e CE sob consulta.",
+      "Nordeste, Brasília e São Paulo com saída frequente.",
     ],
   }),
   service({
@@ -118,14 +118,14 @@ export const servicePages = [
     legacyFile: "rotas.html",
     title: `Rotas de mudança saindo de Petrolina e Juazeiro | ${BUSINESS_NAME}`,
     description:
-      "Rotas de mudança saindo de Petrolina e Juazeiro para Recife, Salvador, Fortaleza, Vale do São Francisco e interestaduais sob agenda.",
+      "Rotas de mudança saindo de Petrolina e Juazeiro para o Nordeste, Brasília, São Paulo, Vale do São Francisco e outros estados sob agenda.",
     eyebrow: "R6 · rotas atendidas",
     headline: "Rotas saindo de Petrolina e Juazeiro — com agenda real.",
-    lead: "Recife · Salvador · Fortaleza · Vale do São Francisco.",
+    lead: "Nordeste · Brasília · São Paulo · Vale do São Francisco.",
     image: "/assets/asi-routes-map-premium-1600x900.webp",
     imageAlt: "Mapa visual das rotas atendidas pela ASI",
     serviceType: "Mudança por rota",
-    areaServed: ["Petrolina", "Juazeiro", "Recife", "Salvador", "Fortaleza"],
+    areaServed: ["Petrolina", "Juazeiro", "Recife", "Salvador", "Fortaleza", "Brasília", "São Paulo"],
     cardDetails: [
       "Saídas de Petrolina e Juazeiro.",
       "Distância, acesso e disponibilidade definem a agenda.",

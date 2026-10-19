@@ -57,7 +57,17 @@ export type FullQuotePayload = {
 const INTENTS: Readonly<Record<string, string>> = {
   header_home: "Quero falar com o Sr. Alexandre sobre uma mudança.",
   hero_orcamento: "Quero pedir um orçamento de mudança.",
+  form_hero: "Quero pedir um orçamento de mudança. Vou mandar fotos e detalhes por aqui.",
   hero_fotos: "Quero mandar fotos e detalhes da minha mudança.",
+  hero_rotas: "Quero consultar uma rota interestadual com a ASI.",
+  videos_cta: "Vi os vídeos da embalagem no site e quero pedir um orçamento.",
+  comercial_home: "Quero cotar uma mudança comercial para minha empresa.",
+  frota_home: "Quero saber qual caminhão atende o tamanho da minha mudança.",
+  rotas_mapa: "Quero consultar minha rota com a ASI.",
+  rota_sao_paulo: "Quero cotar uma mudança entre Petrolina e São Paulo.",
+  rota_brasilia: "Quero cotar uma mudança entre Petrolina e Brasília.",
+  rota_nordeste: "Quero cotar uma mudança para uma capital do Nordeste.",
+  sticky_mobile: "Quero pedir um orçamento de mudança.",
   reviews_cta: "Vi as avaliações da ASI no site e quero pedir um orçamento.",
   founder: "Quero falar diretamente com o Sr. Alexandre sobre minha mudança.",
   op_bau: "Quero entender como a ASI organiza e protege os itens no baú.",
@@ -98,6 +108,7 @@ const INTENTS: Readonly<Record<string, string>> = {
   rota_vale: "Quero cotar uma rota pelo Vale do São Francisco.",
   rota_outras: "Quero consultar uma rota fora das opções principais.",
   orcamento_header: "Quero tirar dúvidas sobre meu orçamento.",
+  orcamento_direto: "Quero pedir um orçamento de mudança. Vou mandar fotos e detalhes por aqui.",
   orcamento_footer: "Quero tirar dúvidas sobre meu orçamento.",
   redes_header: "Vim pela ponte de redes sociais e quero falar pelo WhatsApp.",
 };
@@ -145,7 +156,6 @@ function composeMessage(
   reference: string,
   structured: boolean,
 ): string {
-  const score = scoreLead(payload);
   const lines = [
     "Olá, vim pelo site da ASI - Alexandre Soluções Integradas.",
     structured
@@ -153,7 +163,6 @@ function composeMessage(
       : INTENTS[source] ?? "Quero falar com o Sr. Alexandre sobre uma mudança.",
     "",
     line("Referência", reference),
-    structured ? line("Status do pedido", leadType(score)) : "",
     line("Serviço", payload.service),
     line("Rota", payload.route),
     structured ? line("Origem", payload.origin) : "",
@@ -166,6 +175,7 @@ function composeMessage(
     structured ? line("Extras", payload.extras) : "",
     structured ? line("Nome", payload.name) : "",
     structured ? line("Meu WhatsApp", payload.phone) : "",
+    structured ? "Vou mandar fotos e mais detalhes por aqui." : "",
     "",
     line("Origem do clique", source),
     line("Página", payload.url),
@@ -231,9 +241,10 @@ export function buildFullQuoteMessage(data: FullQuotePayload): string {
     .filter((item, index, list) => list.findIndex((candidate) => normalize(candidate) === normalize(item)) === index);
   const inventoryLines = uniqueItems.length
     ? uniqueItems.map((item) => `- ${item}`)
-    : ["- Não informado"];
+    : ["- Envio fotos e detalhes na conversa"];
   const boxes = data.boxesCount ? `${data.boxesCount} caixas` : "caixas não informadas";
   const bags = data.bagsCount ? `${data.bagsCount} sacos` : "sacos não informados";
+  const boxesLine = data.boxesCount || data.bagsCount ? `*Caixas/Sacos:* ${boxes} e ${bags}` : "";
   const serviceType = data.serviceTypeLabel && normalize(data.serviceTypeLabel) !== "mudanca residencial"
     ? `*Tipo:* ${data.serviceTypeLabel}`
     : "";
@@ -251,8 +262,7 @@ export function buildFullQuoteMessage(data: FullQuotePayload): string {
     "*INVENTÁRIO*",
     data.volumeSizeLabel ? `*Volume:* ${data.volumeSizeLabel}` : "",
     ...inventoryLines,
-    "",
-    `*Caixas/Sacos:* ${boxes} e ${bags}`,
+    boxesLine,
     "━━━━━━━━━━━━━",
     "*EQUIPE (AJUDANTES)*",
     `*Carga (origem):* ${data.helpersOrigin || "A definir"}`,

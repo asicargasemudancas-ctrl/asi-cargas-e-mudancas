@@ -37,14 +37,14 @@ test("componentes críticos da home em 1440", async ({ page }) => {
   await stabilize(page);
   await screenshot(page.locator("header"), "header-social-1440.png");
   await screenshot(page.locator("#top"), "hero-1440.png");
-  await page.getByTestId("heavy-items-trigger").click();
-  await screenshot(page.locator("#top"), "hero-heavy-items-open-1440.png");
-  await page.keyboard.press("Escape");
+  await screenshot(page.locator("#rotas"), "routes-3d-1440.png");
+  await screenshot(page.locator("#mudanca-comercial"), "commercial-1440.png");
+  await screenshot(page.locator("#frota"), "fleet-1440.png");
   await screenshot(page.locator("#avaliacoes"), "reputation-1440.png");
   await screenshot(page.locator("#servicos"), "services-1440.png");
   await screenshot(page.locator("#operacao"), "operation-1440.png");
   await screenshot(page.getByTestId("home-quote-form"), "home-form-1440.png");
-  await screenshot(page.locator("footer"), "footer-map-1440.png");
+  await screenshot(page.locator("footer").filter({ has: page.getByTestId("footer-location") }), "footer-map-1440.png");
   await expect(page.locator("[data-testid^='social-']")).toHaveCount(3);
 });
 
@@ -54,14 +54,12 @@ test("formulários em 390", async ({ page }) => {
   await stabilize(page);
   await screenshot(page.locator("header"), "header-social-390.png");
   await screenshot(page.locator("#top"), "hero-390.png");
-  await page.getByTestId("heavy-items-trigger").click();
-  await screenshot(page.locator("#top"), "hero-heavy-items-open-390.png");
-  await page.keyboard.press("Escape");
+  await screenshot(page.locator("#rotas"), "routes-3d-390.png");
   await screenshot(page.locator("#avaliacoes"), "reputation-390.png");
   await screenshot(page.locator("#servicos"), "services-390.png");
   await screenshot(page.locator("#operacao"), "operation-390.png");
   await screenshot(page.getByTestId("home-quote-form"), "home-form-390.png");
-  await screenshot(page.locator("footer"), "footer-map-390.png");
+  await screenshot(page.locator("footer").filter({ has: page.getByTestId("footer-location") }), "footer-map-390.png");
 
   await page.goto("/orçamento", { waitUntil: "networkidle" });
   await stabilize(page);

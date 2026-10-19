@@ -12,7 +12,7 @@ import {
   type FullQuotePayload,
 } from "@/lib/whatsapp";
 
-const FORM_VERSION = "asi-orcamento-next-v1-20260830";
+const FORM_VERSION = "asi-orcamento-next-v2-20261018";
 const STORAGE_KEY = "asi_quote_leads";
 const SHEETS_ENDPOINT = process.env.NEXT_PUBLIC_ASI_SHEETS_ENDPOINT?.trim() ?? "";
 
@@ -26,7 +26,7 @@ const states = [
   ["SE", "Sergipe"], ["TO", "Tocantins"],
 ] as const;
 
-const stepTitles = ["Rota", "Data", "Volume", "Acesso", "Contato"] as const;
+const stepTitles = ["Rota", "Data", "Itens", "Acesso", "Contato"] as const;
 const serviceMap: Readonly<Record<string, string>> = {
   "Mudança residencial": "mudanca-residencial",
   "Mudança comercial": "mudanca-comercial",
@@ -38,10 +38,6 @@ const serviceMap: Readonly<Record<string, string>> = {
 
 function value(form: HTMLFormElement, name: string): string {
   return String(new FormData(form).get(name) ?? "").trim();
-}
-
-function checkedValues(form: HTMLFormElement, name: string): string[] {
-  return new FormData(form).getAll(name).map(String);
 }
 
 function selectedLabel(form: HTMLFormElement, name: string): string {
@@ -72,9 +68,6 @@ function payloadFrom(form: HTMLFormElement): FullQuotePayload {
     destinationAddressRef: value(form, "destination_address_ref"),
     volumeSizeLabel: selectedLabel(form, "volume_size"),
     inventoryText: value(form, "inventory_text"),
-    largeItems: checkedValues(form, "large_items"),
-    boxesCount: value(form, "boxes_count"),
-    bagsCount: value(form, "bags_count"),
     helpersOrigin: selectedLabel(form, "helpers_origin"),
     helpersDestination: selectedLabel(form, "helpers_destination"),
     serviceTypeLabel: selectedLabel(form, "service_type"),
@@ -147,7 +140,6 @@ export function FullQuoteForm() {
     const message = buildFullQuoteMessage(payload);
     const lead = {
       ...Object.fromEntries(new FormData(form).entries()),
-      large_items: checkedValues(form, "large_items"),
       ref: reference,
       created_at: new Date().toISOString(),
       form_version: FORM_VERSION,
@@ -163,7 +155,7 @@ export function FullQuoteForm() {
         service_type: value(form, "service_type"),
         has_origin: value(form, "origin_city") && value(form, "origin_state") ? "yes" : "no",
         has_destination: value(form, "destination_city") && value(form, "destination_state") ? "yes" : "no",
-        has_volume: value(form, "inventory_text") || checkedValues(form, "large_items").length ? "yes" : "no",
+        has_volume: value(form, "inventory_text") || value(form, "volume_size") !== "nao-sei" ? "yes" : "no",
         has_phone: value(form, "phone") ? "yes" : "no",
       });
     } else {
@@ -236,13 +228,11 @@ export function FullQuoteForm() {
           </fieldset>
 
           <fieldset data-step="3" hidden={step !== 3}>
-            <legend className="text-2xl font-black text-white">Qual o tamanho da mudança?</legend>
-            <p className="mt-2 text-sm leading-6 text-white/52">Uma estimativa já ajuda. Descreva os itens principais mesmo sem saber listar tudo.</p>
+            <legend className="text-2xl font-black text-white">O que vai na mudança?</legend>
+            <p className="mt-2 text-sm leading-6 text-white/52">Não precisa listar tudo. As fotos dos cômodos, enviadas na conversa do WhatsApp, mostram o volume melhor do que qualquer lista.</p>
             <div className="mt-6 grid gap-5">
               <ChoiceGroup title="Tamanho aproximado" columns><Choice name="volume_size" value="poucos-itens" label="Poucos itens" /><Choice name="volume_size" value="um-dois-comodos" label="1-2 cômodos" /><Choice name="volume_size" value="casa-pequena" label="Casa ou apê pequeno" /><Choice name="volume_size" value="casa-inteira" label="Casa inteira" /><Choice name="volume_size" value="comercial" label="Comercial ou escritório" /><Choice name="volume_size" value="nao-sei" label="Ainda não sei" defaultChecked /></ChoiceGroup>
-              <label className={labelClass}>O que vai no caminhão?<textarea name="inventory_text" required placeholder="Ex.: geladeira, fogão, máquina de lavar, sofá, cama box, caixas..." className={`${inputClass} min-h-32 py-3`} /></label>
-              <ChoiceGroup title="Itens grandes" columns>{[["Geladeira", "Geladeira"], ["Fogao", "Fogão"], ["Maquina de lavar", "Máquina"], ["Sofa", "Sofá"], ["Cama box", "Cama box"], ["Mesa e cadeiras", "Mesa"]].map(([itemValue, label]) => <Choice key={itemValue} name="large_items" value={itemValue} label={label} type="checkbox" />)}</ChoiceGroup>
-              <div className="grid gap-4 sm:grid-cols-2"><TextField id="boxesCount" name="boxes_count" label="Quantidade de caixas" type="number" placeholder="Ex.: 6" className={inputClass} /><TextField id="bagsCount" name="bags_count" label="Quantidade de sacos" type="number" placeholder="Ex.: 4" className={inputClass} /></div>
+              <label className={labelClass}>Quer adiantar algo? <span className="font-semibold text-white/45">(opcional)</span><textarea name="inventory_text" placeholder="Ex.: casa de 2 quartos, móveis da sala e cozinha, alguns itens frágeis..." className={`${inputClass} min-h-28 py-3`} /></label>
             </div>
           </fieldset>
 

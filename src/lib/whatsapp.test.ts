@@ -69,7 +69,7 @@ test("mantém intenção curta por origem do clique", () => {
   assert.match(message, /Origem do clique: reviews_cta/);
 });
 
-test("preserva ordem e score da mensagem estruturada da home", () => {
+test("preserva ordem e score da home sem expor status interno ao cliente", () => {
   const payload = {
     service: "Mudança completa",
     route: "Petrolina para Recife",
@@ -89,7 +89,8 @@ test("preserva ordem e score da mensagem estruturada da home", () => {
 
   assert.ok(message.indexOf("Origem: Petrolina") < message.indexOf("Destino: Recife"));
   assert.ok(message.indexOf("Destino: Recife") < message.indexOf("Itens pesados: Geladeira, Sofá, Cama box"));
-  assert.match(message, /Status do pedido: pronto para orçamento/);
+  assert.doesNotMatch(message, /Status do pedido/);
+  assert.match(message, /Vou mandar fotos e mais detalhes por aqui\./);
   assert.equal(scoreLead(payload), 100);
   assert.equal(leadType(100), "pronto para orçamento");
 });

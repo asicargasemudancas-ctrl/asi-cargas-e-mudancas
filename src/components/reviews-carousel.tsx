@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useAnimationFrame, useMotionValue, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 import { useHydrated } from "@/hooks/use-hydrated";
@@ -104,7 +105,7 @@ function ReviewCard({
       className="fluid-card flex min-h-72 w-[min(84vw,21.5rem)] shrink-0 snap-start flex-col rounded-[0.8rem] border border-[#dfe3eb] bg-[#f9fafc] p-6"
     >
       <div className="flex items-center gap-3">
-        <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[#0e2f6d] font-black text-white">{review.initials}</span>
+        <ReviewAvatar review={review} />
         <div className="min-w-0"><strong className="block text-sm text-[#0a1230]">{review.name}</strong><small className="text-[#6c7484]">{review.when}</small></div>
         <b className="ml-auto font-mono text-xs font-medium text-[#7f8899]">Nº {String(index + 1).padStart(2, "0")}</b>
       </div>
@@ -113,4 +114,11 @@ function ReviewCard({
       <small className="mt-auto pt-5 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-[#6e7788]">{review.tag}</small>
     </article>
   );
+}
+
+export function ReviewAvatar({ review, size = 44 }: Readonly<{ review: Review; size?: number }>) {
+  if (review.avatar) {
+    return <Image src={review.avatar} alt={`Foto de perfil de ${review.name} no Google`} width={size} height={size} className="shrink-0 rounded-full object-cover ring-2 ring-white shadow-[0_4px_12px_rgba(10,18,48,.18)]" style={{ width: size, height: size }} />;
+  }
+  return <span className="grid shrink-0 place-items-center rounded-full bg-[#0e2f6d] font-black text-white" style={{ width: size, height: size }}>{review.initials}</span>;
 }

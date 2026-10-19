@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 
 import {
+  CommercialSection,
   ContactSection,
   FaqSection,
-  FleetProofSection,
+  FleetSection,
   FounderSection,
   HomeHero,
   HomeTrustStrip,
@@ -16,15 +17,17 @@ import {
 import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { movingCompanyJsonLd } from "@/data/business";
+import { StickyWhatsApp } from "@/components/sticky-whatsapp";
+import { faqJsonLd, homeVideosJsonLd, movingCompanyJsonLd } from "@/data/business";
+import { buildQuickQuoteMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Mudanças para todo o Brasil | ASI Alexandre Soluções Integradas",
-  description: "Mudança para todo o Brasil sob agenda, com rota, volume, acesso e cuidado combinados antes. Orçamento direto com o Sr. Alexandre pelo WhatsApp.",
+  title: "Mudanças de Petrolina para todo o Brasil | ASI Cargas e Mudanças",
+  description: "Mudanças saindo de Petrolina para o Nordeste, Brasília, São Paulo e todo o Brasil. Orçamento direto com o Sr. Alexandre pelo WhatsApp, com fotos e opções de embalagem.",
   alternates: { canonical: "/" },
   openGraph: {
     title: "ASI Cargas e Mudanças para todo o Brasil",
-    description: "Rota, volume e cuidado combinados antes da mudança. Atendimento direto com o Sr. Alexandre.",
+    description: "De Petrolina para o Nordeste, Brasília e São Paulo. Atendimento direto com o Sr. Alexandre pelo WhatsApp.",
     url: "/",
     type: "website",
     images: [{ url: "/assets/asi-hero-conversion-truck-1600x900.webp", width: 1600, height: 900, alt: "Caminhão ASI em operação de mudança" }],
@@ -35,21 +38,25 @@ export default function HomePage() {
   return (
     <>
       <JsonLd data={movingCompanyJsonLd} />
+      <JsonLd data={faqJsonLd} />
+      <JsonLd data={homeVideosJsonLd} />
       <SiteHeader />
       <main>
         <HomeHero />
         <HomeTrustStrip />
-        <FleetProofSection />
-        <ReputationSection />
-        <FounderSection />
-        <ServicesSection />
         <OperationSection />
-        <MethodSection />
+        <ReputationSection />
         <RoutesSection />
+        <ServicesSection />
+        <CommercialSection />
+        <FleetSection />
+        <FounderSection />
+        <MethodSection />
         <ContactSection />
         <FaqSection />
       </main>
       <SiteFooter />
+      <StickyWhatsApp href={buildWhatsAppUrl(buildQuickQuoteMessage("sticky_mobile", { page: "home" }))} />
     </>
   );
 }

@@ -19,20 +19,18 @@ test("cobre as 23 páginas dinâmicas sem canonical legado", () => {
   }
 });
 
-test("preserva a reputação vigente do working tree", () => {
+test("reputação reflete o perfil público conferido em 18/10/2026", () => {
   assert.equal(reputation.rating, "5,0");
-  assert.equal(reputation.totalReviews, 131);
-  assert.equal(reputation.fiveStarReviews, 131);
+  assert.equal(reputation.totalReviews, 137);
+  assert.equal(reputation.fiveStarReviews, 137);
   assert.equal(reputation.googleProfileUrl, "https://share.google/MCQiNjmbHnPvi8Kwo");
 });
 
-test("preserva as dez avaliações locais sem reescrever o texto", () => {
-  assert.equal(reviews.length, 10);
-  assert.equal(reviews[0]?.name, "Lara Ramos lalinha");
-  assert.equal(
-    reviews[0]?.text,
-    "Ótimo atendimento, cuidadoso com todos os móveis! Recomendo",
-  );
+test("prioriza avaliações recentes reais, sem reescrever o texto", () => {
+  assert.equal(reviews.length, 12);
+  assert.equal(reviews[0]?.name, "Matheus Belo");
+  assert.match(reviews[0]?.text ?? "", /melhor que o da magazine Luíza/);
+  assert.ok(reviews.some((review) => review.type === "comercial" && /São Paulo a Petrolina/.test(review.text)));
   assert.ok(reviews.every((review) => review.rating === 5));
 });
 

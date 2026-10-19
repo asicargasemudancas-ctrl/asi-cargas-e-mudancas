@@ -1,10 +1,10 @@
 import { expect, test } from "playwright/test";
 
 const expectedNames = [
-  "access_notes", "bags_count", "boxes_count", "date_flexibility", "date_option", "date_pending",
+  "access_notes", "date_flexibility", "date_option", "date_pending",
   "destination_address_ref", "destination_city", "destination_floor", "destination_neighborhood",
   "destination_property_type", "destination_state", "disassembly_needed", "helpers_destination",
-  "helpers_origin", "intent", "inventory_text", "large_items", "lgpd_consent", "name",
+  "helpers_origin", "intent", "inventory_text", "lgpd_consent", "name",
   "origin_address_ref", "origin_city", "origin_floor", "origin_neighborhood", "origin_property_type",
   "origin_state", "packing_needed", "phone", "ref", "service_type", "volume_size",
 ];
@@ -17,7 +17,7 @@ test.beforeEach(async ({ context }) => {
   });
 });
 
-test("orçamento preserva cinco etapas e os 31 nomes do formulário", async ({ page }) => {
+test("orçamento preserva cinco etapas e os 28 nomes do formulário, sem itens pesados", async ({ page }) => {
   await page.goto("/orçamento");
   await expect(page.getByRole("heading", { level: 1, name: /orçamento de mudança/i })).toBeVisible();
   const form = page.getByTestId("full-quote-form");
@@ -27,6 +27,7 @@ test("orçamento preserva cinco etapas e os 31 nomes do formulário", async ({ p
     [...new Set(elements.map((element) => element.getAttribute("name")).filter(Boolean))].sort(),
   );
   expect(names).toEqual(expectedNames);
+  await expect(form.getByText("Itens grandes")).toHaveCount(0);
   await expect(page.getByText("Etapa 1 de 5 · Rota")).toBeVisible();
 
   await page.getByRole("button", { name: "Continuar" }).click();
@@ -63,7 +64,7 @@ test("envio final persiste lead local, abre WhatsApp e não chama Sheets vazio",
   await page.getByLabel("Ainda estou definindo a data").check();
   await page.getByRole("button", { name: "Continuar" }).click();
 
-  await page.getByLabel("O que vai no caminhão?").fill("Geladeira, sofá, cama box, guarda-roupa, mesa e doze caixas");
+  await page.getByLabel(/Quer adiantar algo/).fill("Casa de dois quartos e itens frágeis da cozinha");
   await page.getByRole("button", { name: "Continuar" }).click();
 
   await page.getByLabel("Imóvel na origem").selectOption({ label: "Casa térrea" });
