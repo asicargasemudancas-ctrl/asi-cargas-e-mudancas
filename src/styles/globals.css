@@ -344,6 +344,27 @@ textarea {
   position: relative;
 }
 
+.route-map__brasil {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.route-map[data-ready="true"] .route-map__brasil {
+  animation: brasil-badge 600ms var(--asi-motion-ease) 6.4s forwards;
+}
+
+@keyframes brasil-badge {
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-map[data-ready="true"] .route-map__brasil {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .route-map canvas {
   cursor: grab;
   touch-action: pan-y;
@@ -480,4 +501,10 @@ textarea {
 
 .footer-map iframe {
   filter: saturate(1.05) contrast(1.02);
+}
+
+.brasil-banner {
+  background:
+    radial-gradient(22rem 12rem at 100% 0%, rgb(255 193 7 / 16%), transparent 70%),
+    linear-gradient(135deg, rgb(14 47 109 / 70%), rgb(7 20 47 / 70%));
 }

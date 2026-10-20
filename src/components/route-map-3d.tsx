@@ -151,6 +151,7 @@ export function RouteMap3D() {
 
       const baseColor = new THREE.Color("#132a5e");
       const nordesteColor = new THREE.Color("#1f4594");
+      const brasilColor = new THREE.Color("#1a3878");
       const priorityGlow = new THREE.Color("#ffc107");
       const selectGlow = new THREE.Color("#8fb4ff");
       const sideMaterial = track(new THREE.MeshStandardMaterial({ color: "#0a1838", roughness: 0.9, metalness: 0.05 }));
@@ -407,7 +408,9 @@ export function RouteMap3D() {
           state.group.scale.z = Math.max(0.001, rise);
           state.group.position.z = (1 - rise) * -1.5;
           const highlight = nordeste.has(state.uf) ? easeInOut((t - 1.1) / 0.8) : 0;
-          state.material.color.copy(baseColor).lerp(nordesteColor, measuring ? highlight * 0.5 : highlight);
+          // Fim da entrada: o país inteiro acende, reforçando o atendimento em todo o Brasil.
+          const nationwide = easeInOut((t - 6.2) / 1.2);
+          state.material.color.copy(baseColor).lerp(brasilColor, nationwide).lerp(nordesteColor, measuring ? highlight * 0.5 : highlight);
           state.material.emissive.setRGB(0, 0, 0);
           if (selectedUfs.has(state.uf)) {
             state.material.emissive.copy(selectGlow).multiplyScalar(0.18);
@@ -604,6 +607,7 @@ export function RouteMap3D() {
             );
           })}
         </div>
+        <span data-testid="map-brasil-badge" className="route-map__brasil pointer-events-none absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-[#ffc107]/60 bg-[#ffc107] px-3 py-1.5 text-xs font-black uppercase tracking-[0.08em] text-[#07142f] shadow-[0_8px_24px_rgba(255,193,7,.3)]">+ Todo o Brasil</span>
         <span className="route-map__hint pointer-events-none absolute right-3 top-3 hidden items-center gap-1.5 rounded-full border border-white/12 bg-[#07142f]/70 px-3 py-1.5 font-mono text-[0.62rem] font-bold uppercase tracking-[0.12em] text-white/70 backdrop-blur sm:inline-flex">
           <MousePointerClick className="size-3.5 text-[#ffc107]" aria-hidden="true" /> Arraste para girar
         </span>

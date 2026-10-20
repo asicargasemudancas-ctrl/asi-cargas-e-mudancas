@@ -86,7 +86,9 @@ test("mapa de rotas em Three.js renderiza com destaque para São Paulo e Brasíl
   await expect(priority).toHaveCount(2);
   await expect(priority.filter({ hasText: "São Paulo" })).toHaveCSS("opacity", "1", { timeout: 12_000 });
   await expect(priority.filter({ hasText: "Brasília" })).toHaveCSS("opacity", "1");
-  await expect(page.locator("#rotas").getByRole("heading", { level: 2 })).toContainText("Brasília e São Paulo");
+  await expect(page.locator("#rotas").getByRole("heading", { level: 2 })).toContainText("todo o Brasil");
+  await expect(page.getByTestId("brasil-todo")).toContainText("Atendemos todo o Brasil");
+  await expect(page.getByTestId("brasil-todo").getByRole("listitem")).toHaveCount(5);
 });
 
 test("mapa calcula a distância entre duas cidades com dois cliques", async ({ page }) => {

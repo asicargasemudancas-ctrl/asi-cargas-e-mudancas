@@ -308,8 +308,8 @@ export function RoutesSection() {
       <div className="mx-auto grid w-full max-w-[75rem] gap-8 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:gap-x-8 lg:gap-y-6">
         <Reveal className="lg:col-start-1 lg:row-start-1">
           <SectionLabel light>03 — Rotas</SectionLabel>
-          <h2 className="type-display mt-5 font-sans">De Petrolina para o Nordeste, Brasília e São Paulo.</h2>
-          <p className="mt-6 max-w-[34rem] text-base leading-7 text-white/68">Petrolina e Juazeiro são a base. As saídas mais frequentes vão para São Paulo, Brasília e capitais do Nordeste; outras cidades do Brasil entram sob agenda, conforme volume e data.</p>
+          <h2 className="type-display mt-5 font-sans">De Petrolina para todo o Brasil.</h2>
+          <p className="mt-6 max-w-[34rem] text-base leading-7 text-white/68">Petrolina e Juazeiro são a base. As rotas mais frequentes são Nordeste, Brasília e São Paulo, e a ASI atende qualquer destino do país sob agenda, com carga exclusiva ou compartilhada.</p>
         </Reveal>
         <Reveal delay={0.08} className="relative lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
           <RouteMap3D />
@@ -317,6 +317,14 @@ export function RoutesSection() {
             <span className="flex items-center gap-2"><i className="block h-1 w-6 rounded bg-[#ffc107]" aria-hidden="true" />Prioritárias</span>
             <span className="flex items-center gap-2"><i className="block h-0.5 w-6 rounded bg-[#8fb4ff]" aria-hidden="true" />Sob agenda</span>
             <span className="flex items-center gap-2"><i className="block size-2 rounded-full bg-[#ffc107]" aria-hidden="true" />Base Petrolina</span>
+          </div>
+          <div data-testid="brasil-todo" className="brasil-banner mt-5 overflow-hidden rounded-[1rem] border border-[#ffc107]/50 p-5 sm:p-6">
+            <strong className="block text-[clamp(1.6rem,3.4vw,2.4rem)] font-black uppercase leading-none tracking-[-0.02em] text-[#ffc107]">Atendemos todo o Brasil</strong>
+            <ul className="mt-4 flex flex-wrap gap-2" aria-label="Regiões atendidas">
+              {["Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"].map((region) => <li key={region} className="rounded-full border border-white/20 bg-white/[.08] px-3 py-1.5 text-xs font-black uppercase tracking-[0.08em] text-white">{region}</li>)}
+            </ul>
+            <p className="mt-4 text-sm leading-6 text-white/72">As cidades no mapa são as rotas mais frequentes. Para qualquer outro destino do país, a ASI faz mudança exclusiva ou carga compartilhada sob agenda.</p>
+            <a href={whatsapp("rotas_brasil")} target="_blank" rel="noopener noreferrer" className="fluid-action mt-4 inline-flex items-center gap-2 text-sm font-black text-[#ffdd6b] hover:text-white">Consultar meu destino <ArrowRight className="size-4" aria-hidden="true" /></a>
           </div>
         </Reveal>
         <Reveal className="lg:col-start-1 lg:row-start-2">

@@ -64,6 +64,7 @@ const INTENTS: Readonly<Record<string, string>> = {
   comercial_home: "Quero cotar uma mudança comercial para minha empresa.",
   frota_home: "Quero saber qual caminhão atende o tamanho da minha mudança.",
   rotas_mapa: "Quero consultar minha rota com a ASI.",
+  rotas_brasil: "Quero consultar uma mudança para outro estado do Brasil.",
   rota_sao_paulo: "Quero cotar uma mudança entre Petrolina e São Paulo.",
   rota_brasilia: "Quero cotar uma mudança entre Petrolina e Brasília.",
   rota_nordeste: "Quero cotar uma mudança para uma capital do Nordeste.",
